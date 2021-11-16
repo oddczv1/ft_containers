@@ -1,44 +1,52 @@
 #include "./containers/vector.hpp"
 #include "./containers/stack.hpp"
-#include "./containers/map.hpp"
+// #include "./containers/map.hpp"
 #include "./iterator/util.hpp"
 #include <vector>
 #include <stack>
 #include <map>
 
-
-
 int main()
 {
-	typedef ft::map<std::string, int>::iterator iter;
-	typedef ft::pair<iter,bool> pair;
 
-    ft::map<std::string, int> m1;
-	m1.insert(ft::pair<std::string, int>("me", 20));
-	m1.insert(ft::pair<std::string, int>("me2", 13));
-	m1["lme"] = 3;
-	m1.at("lme") = 4;
-	ft::map<std::string, int> m2(m1);
-	std::cout << m2.count("lme1") << std::endl;
-	for(iter a = m2.begin(); a != m2.end(); a++)
-        std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-	std::cout << m1.max_size()<< std::endl;
 
-	typedef std::map<std::string, int>::iterator iter1;
+	typedef std::map<std::string, int>::iterator iter;
+	typedef std::pair<std::string,int> pair;
+	pair aa = std::make_pair("aa", 1);
+    // ft::map<std::string, int> m1;
+	// m1.insert(ft::pair<std::string, int>("me", 20));
+	// m1.insert(ft::pair<std::string, int>("me2", 13));
+	// m1["lme"] = 3;
+	// m1.at("lme") = 4;
+	// ft::map<std::string, int> m2(m1);
+	// std::cout << m2.count("lme1") << std::endl;
+	// for(iter a = m2.begin(); a != m2.end(); a++)
+    //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+	// std::cout << m1.max_size()<< std::endl;
 
+	// typedef std::map<std::string, int>::iterator iter1;
 
     std::map<std::string, int> n1;
-	n1.insert(std::pair<std::string, int>("me", 20));
-	n1.insert(std::pair<std::string, int>("me1", 13));
-	n1["lme"] = 3;
-	n1.at("lme") = 4;
-	std::map<std::string, int> n2(n1);
-	//std::cout << n2.count("me1") << std::endl;
-	for(iter1 a = n2.begin(); a != n2.end(); a++)
+	n1.insert(std::make_pair("ac", 1));
+	n1.insert(std::make_pair("aa", 3));
+	n1.insert(std::make_pair("ab", 24));
+	n1.insert(std::make_pair("ab", 333));
+	std::cout << n1.max_size() << std::endl;
+	for(iter a = n1.begin(); a != n1.end(); a++)
         std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-	std::cout << n1.max_size()<< std::endl;
-	std::cout << std::endl;
+
+	// n1.insert(std::pair<std::string, int>("me", 20));
+	// n1.insert(std::pair<std::string, int>("me1", 13));
+	// n1["lme"] = 3;
+	// n1.at("lme") = 4;
+	// std::map<std::string, int> n2(n1);
+	// //std::cout << n2.count("me1") << std::endl;
+	// for(iter1 a = n2.begin(); a != n2.end(); a++)
+    //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+	// std::cout << n1.max_size()<< std::endl;
+	// std::cout << std::endl;
 	/*
+
 	std::map<std::string, int> m;
     std::map<std::string, int> m1(m.begin(), m.end());
 	typedef std::map<std::string, int>::iterator iter;
@@ -64,8 +72,10 @@ int main()
     }
 	std::cout << std::endl;*/
 }
+
 /*
 //vector
+int main()
 {
 	typedef  ft::vector<int>::iterator iterator;
 	typedef  std::vector<int>::iterator iterator1;

@@ -1,5 +1,5 @@
-#ifndef AVL_TREE_ITERATOR_HPP
-# define AVL_TREE_ITERATOR_HPP
+#ifndef BIDIRECTIONAL_ITERATOR_HPP
+# define BIDIRECTIONAL_ITERATOR_HPP
 
 # include "iterator.hpp"
 # include "util.hpp"

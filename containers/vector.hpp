@@ -123,7 +123,7 @@ namespace ft
 		_first = _alloc.allocate(count);
 		_last = _first;
 		_count = _first + count;
-		for (size_type i = 0; i < count; i++)
+		for (long i = 0; i < count; i++)
 			_alloc.construct(_last++, *first++);
 	}
 	template<typename T, typename Allocator>
@@ -197,7 +197,7 @@ namespace ft
 		if (this->size() > count)
 		{
 			_last = _first;
-			for (size_type i = 0; i < count; i++)
+			for (long i = 0; i < count; i++)
 				_alloc.construct(_last++, *first++);
 		}
 		else
@@ -206,7 +206,7 @@ namespace ft
 			_first = _alloc.allocate(count);
 			_last = _first;
 			_count = _first + count;
-			for (size_type i = 0; i < count; i++)
+			for (long i = 0; i < count; i++)
 				_alloc.construct(_last++, *first++);
 		}	
 	}
