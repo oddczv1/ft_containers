@@ -1,6 +1,6 @@
 #include "./containers/vector.hpp"
 #include "./containers/stack.hpp"
-// #include "./containers/map.hpp"
+#include "./containers/map.hpp"
 #include "./iterator/util.hpp"
 #include <vector>
 #include <stack>
@@ -8,32 +8,42 @@
 
 int main()
 {
+	//typedef std::map<std::string, int>::iterator iter;
+    // std::map<std::string, int> n1;
+	// n1.insert(std::make_pair("ac", 1));
+	// n1.insert(std::make_pair("aa", 3));
+	// n1.insert(std::make_pair("ab", 24));
+	// n1.insert(std::make_pair("ab", 333));
+	// std::cout << (n1["cc"] = 3) << std::endl;
+	// std::cout << n1.max_size() << std::endl;
+	// for(iter a = n1.begin(); a != n1.end(); a++)
+    //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+
+	
+	typedef ft::pair<std::string, int> pair;
+	pair aa = ft::make_pair("aa", 3);
+	pair bb = ft::make_pair("bb", 4);
+
+    ft::map<std::string, int> m1;
+	m1.insert(aa);
+	const auto [it, success] = m1.insert(bb);
+	std::cout << it->first << "  " << it->second << "   " << success << std::endl;
+	// std::cout << m1.at("aa") << std::endl;
+	// std::cout << m1.at("bb") << std::endl;
+	// std::cout << m1.at("cc") << std::endl;
+	// std::cout << m1["aa"] << std::endl;
+	// std::cout << m1["bb"] << std::endl;
+	// std::cout << (m1["cc"] = 6) << std::endl;
+	//const auto [it, success] = m1.insert(ft::pair<std::string, int>("me", 20));
 
 
-	typedef std::map<std::string, int>::iterator iter;
-	typedef std::pair<std::string,int> pair;
-	pair aa = std::make_pair("aa", 1);
-    // ft::map<std::string, int> m1;
-	// m1.insert(ft::pair<std::string, int>("me", 20));
-	// m1.insert(ft::pair<std::string, int>("me2", 13));
-	// m1["lme"] = 3;
-	// m1.at("lme") = 4;
-	// ft::map<std::string, int> m2(m1);
-	// std::cout << m2.count("lme1") << std::endl;
 	// for(iter a = m2.begin(); a != m2.end(); a++)
     //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 	// std::cout << m1.max_size()<< std::endl;
 
 	// typedef std::map<std::string, int>::iterator iter1;
 
-    std::map<std::string, int> n1;
-	n1.insert(std::make_pair("ac", 1));
-	n1.insert(std::make_pair("aa", 3));
-	n1.insert(std::make_pair("ab", 24));
-	n1.insert(std::make_pair("ab", 333));
-	std::cout << n1.max_size() << std::endl;
-	for(iter a = n1.begin(); a != n1.end(); a++)
-        std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+
 
 	// n1.insert(std::pair<std::string, int>("me", 20));
 	// n1.insert(std::pair<std::string, int>("me1", 13));
