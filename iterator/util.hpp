@@ -95,8 +95,8 @@ namespace ft
             {
                 if (*this == other )
                     return (*this);
-                this->first = other .first;
-                this->second = other .second;
+                this->first = other.first;
+                this->second = other.second;
                 return (*this);
             }
     };

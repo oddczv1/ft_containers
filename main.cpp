@@ -20,14 +20,46 @@ int main()
     //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
 	
-	typedef ft::pair<std::string, int> pair;
-	pair aa = ft::make_pair("aa", 3);
-	pair bb = ft::make_pair("bb", 4);
+	// typedef ft::pair<std::string, int> pair;
+	// pair a = ft::make_pair("a", 3);
+	// pair b = ft::make_pair("b", 4);
+	// pair c = ft::make_pair("c", 5);
+	// pair d = ft::make_pair("d", 4);
+	// pair bb = ft::make_pair("e", 4);
+	// pair bb = ft::make_pair("f", 4);
 
+	typedef ft::map<std::string, int>::iterator iter;
     ft::map<std::string, int> m1;
-	m1.insert(aa);
-	const auto [it, success] = m1.insert(bb);
-	std::cout << it->first << "  " << it->second << "   " << success << std::endl;
+	m1.insert(ft::make_pair("b", 2));
+	m1.insert(ft::make_pair("d", 4));	
+	m1.insert(ft::make_pair("e", 5));
+	m1.insert(ft::make_pair("a", 1));
+	m1.insert(ft::make_pair("f", 6));
+	m1.insert(ft::make_pair("c", 3));
+	iter b = m1.end();
+	std::cout << "[" << b->first << ", " << b->second << "]" << " " << std::endl;
+	//std::cout << "aaaaa"<< std::endl;
+	//m1.erase(b);
+	//std::cout << "bbbbb"<< std::endl;
+	//std::cout << m1["b"] << std::endl;
+	//std::cout << "cccc"<< std::endl;
+	for(iter a = m1.begin(); a != m1.end(); a++)
+       std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+
+
+	
+
+    //std::cout << "지워져야함1 " <<  a->first << std::endl;
+
+	//m1.erase(a);
+	//std::cout << "지워져야함2 " <<  m1["a"] << std::endl;
+
+
+
+
+
+	// const auto [it, success] = m1.insert(bb);
+	// std::cout << it->first << "  " << it->second << "   " << success << std::endl;
 	// std::cout << m1.at("aa") << std::endl;
 	// std::cout << m1.at("bb") << std::endl;
 	// std::cout << m1.at("cc") << std::endl;

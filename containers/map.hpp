@@ -13,25 +13,26 @@ namespace ft
             {
                 ft::pair<const Key, T>  value;
                 int height;
+				node* parent;
                 node* left;
                 node* right;
             };
 
 		public:
 			// Member types //
-			typedef Key 																				key_type;
-			typedef	T 																					mapped_type;
-			typedef typename ft::pair<const key_type, T> 												value_type;
-			typedef size_t 																				size_type;
-			typedef typename std::ptrdiff_t 															difference_type;
-			typedef Compare 																			key_compare;
-			typedef Allocator 																			allocator_type;
-			typedef value_type& 																		reference;
-			typedef const value_type& 																	const_reference;
-			typedef typename Allocator::pointer 														pointer;
-			typedef typename Allocator::const_pointer 													const_pointer;
-			typedef typename ft::bidirectional_iterator<value_type, Compare, node>						    iterator;
-			typedef typename ft::bidirectional_iterator<const value_type, Compare, node>				        const_iterator;
+			typedef Key 																	key_type;
+			typedef	T 																		mapped_type;
+			typedef typename ft::pair<const key_type, T> 									value_type;
+			typedef size_t 																	size_type;
+			typedef typename std::ptrdiff_t 												difference_type;
+			typedef Compare 																key_compare;
+			typedef Allocator 																allocator_type;
+			typedef value_type& 															reference;
+			typedef const value_type& 														const_reference;
+			typedef typename Allocator::pointer 											pointer;
+			typedef typename Allocator::const_pointer 										const_pointer;
+			typedef typename ft::bidirectional_iterator<value_type, Compare, node>			iterator;
+			typedef typename ft::bidirectional_iterator<const value_type, Compare, node>	const_iterator;
 			// typedef ft::reverse_iterator<iterator>														reverse_iterator;
 			// typedef ft::reverse_iterator<const_iterator>												const_reverse_iterator;
 			// Member classes //
@@ -49,9 +50,9 @@ namespace ft
 			};
 			// Member functions //
 			map(const Compare &comp = key_compare(), const Allocator &alloc = allocator_type());
-			// template< class InputIt >
-			// map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = nullptr);
-			// map(const map& other);
+			template< class InputIt >
+			map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = nullptr);
+			map(const map& other);
 			// ~map();
 			map &operator=( const map &other );
 			// // Element access //
@@ -59,10 +60,10 @@ namespace ft
 			const T& at(const Key& key) const;
 			T& operator[](const Key &key);
 			// Iterators //
-            // iterator begin()                        { return iterator(_lastNode->right, _lastNode, _comp); }
-            // const_iterator begin() const            { return const_iterator(_lastNode->right, _lastNode, _comp); }
-            // iterator end()                          { return iterator(_lastNode, _lastNode, _comp); }
-            // const_iterator end() const              { return const_iterator(_lastNode, _lastNode, _comp); }
+            iterator begin()                        { return iterator(minimum(_top), _comp); }
+            const_iterator begin() const            { return const_iterator(minimum(_top), _comp); }
+            iterator end()                          { return iterator(maximum(_top), _comp); }
+            const_iterator end() const              { return const_iterator(maximum(_top), _comp); }
             // reverse_iterator rbegin()               { return reverse_iterator(_lastNode->left, _lastNode, _comp); }
             // const_reverse_iterator rbegin() const   { return const_reverse_iterator(_lastNode->left, _lastNode, _comp); }
             // reverse_iterator rend()                 { return reverse_iterator(_lastNode, _lastNode, _comp); }
@@ -72,14 +73,14 @@ namespace ft
             size_t size() const						{ return (_size); }
             // size_t max_size() const 				{ return (_allocNode.max_size()); }
 			// Modifiers //
-			// void clear();
+			void clear();
 			ft::pair<iterator, bool> insert(const value_type &value);
 			// iterator insert(iterator position, const value_type& value);
 			// template< class InputIterator >
 			// void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr);
-            // void erase (iterator position);
-            // void erase (iterator first, iterator last);
-            // size_type erase (const key_type& key);
+            void erase (iterator position);
+            void erase (iterator first, iterator last);
+            //size_type erase (const key_type& key);
 			void swap(map &other);
 			// // Lookup //
 			// size_type count(const Key &key);
@@ -95,11 +96,10 @@ namespace ft
             // key_compare key_comp() const        { return _comp; }
             // value_compare value_comp() const    { return value_compare(_comp); }
 
+
 		private:
             node*                   _top;
-			node*					_tem;
 			node*					_newNode;
-			node*					_target;
             size_type               _size;
             allocator_type          _allocPair;
             key_compare             _comp;
@@ -110,9 +110,9 @@ namespace ft
                 _top = insert_node(node, value);
             }
 
-            void deleteNode(const value_type& value)
+            void deleteNode(node* node, const value_type& value)
 			{
-                _top = delete_node(_top, value);
+            	_top = delete_node(node, value);			
             }
 
             int max(int a, int b) {
@@ -129,12 +129,13 @@ namespace ft
 
             node* createNode(const value_type& value)
             {
-                node* newNode = _allocNode.allocate(1);
-                _allocPair.construct(&newNode->value, value);
-                newNode->height = 1;
-                newNode->left = nullptr;
-                newNode->right = nullptr;
-                return newNode;
+                node* node = _allocNode.allocate(1);
+                _allocPair.construct(&node->value, value);
+                node->height = 1;
+				node->parent = nullptr;
+                node->left = nullptr;
+                node->right = nullptr;
+                return node;
             }
 
             node* insert_node(node* node, const value_type& value) {
@@ -144,9 +145,15 @@ namespace ft
 					return _newNode;
 				}
                 if  (node->value.first > value.first)
-                    node->left = insert_node(node->left,  value);
+				{
+                	node->left = insert_node(node->left,  value);
+					node->left->parent = node;
+				}
                 else if (node->value.first < value.first)
-                    node->right = insert_node(node->right, value);
+				{
+					node->right = insert_node(node->right, value);
+					node->right->parent = node;
+				}								
                 node->height = max(height(node->left), height(node->right)) + 1;
                 return balance(node);
             }
@@ -159,9 +166,15 @@ namespace ft
 
             node* rotate_right(node* node)
             {
-                _tem = node->left;
+				struct node* _tem = node->left; // 오른쪽으로 돌리니까 node의 left를 오른쪽 위로 이동 후 tem 오른쪽에 기존 노드 붙인다
+				_tem->parent = node->parent;
                 node->left = _tem->right;
-                _tem->right = node;
+				if (_tem->right)
+				{
+					_tem->right->parent = node;
+				}
+                _tem->right = node; // 오른쪽에 기존 노드
+				node->parent = _tem;
                 node->height = max(height(node->left), height(node->right)) + 1;
                 _tem->height = max(height(_tem->left), height(_tem->right)) + 1;
                 return _tem;
@@ -169,9 +182,13 @@ namespace ft
 
             node* rotate_left(node* node)
             {
-                _tem = node->right;
+				struct node* _tem = node->right; // 왼쪽으로 돌리니까 node의 right를 왼쪽위로 이동 후 tem 왼쪽에 기존 노드 붙인다
+				_tem->parent = node->parent;
                 node->right = _tem->left;
-                _tem->left = node;
+				if (_tem->left)
+					_tem->left->parent = node;
+                _tem->left = node; //  왼쪽에 기존 노드
+				node->parent = _tem;
                 node->height = max(height(node->left), height(node->right)) + 1;
                 _tem->height = max(height(_tem->left), height(_tem->right)) + 1;
                 return _tem;
@@ -198,37 +215,67 @@ namespace ft
             {
                 if (!node)
                     return nullptr;
+				
                 if (node->value.first > value.first) // 왼쪽 자식으로 이동
-                    node->left = delete_node(node->left, value.first);
+				{
+					node->left = delete_node(node->left, value);
+					if (node->left)
+						node->left->parent = node;
+				}   
                 else if (node->value.first < value.first) // 오른쪽 자식으로 이동
-                    node->right = delete_node(node->right, value.first);
+				{
+					node->right = delete_node(node->right, value);
+					if (node->right)
+						node->right->parent = node;
+				}       
                 else  // 삭제할 노드 발견
                 {
-                    if (!node->right) // case 1, 0
-                        return node->left;
-                    if (!node->left)  // case 0 , 1
-                        return node->right;
-                    _target = node;    // case 1  1
-                    node = minimum(_target->right); //중위 후속자를 찾아서 n이 참조하게 함
-                    node->right = del_min(_target->right);
-                    node->left  = _target->left;
-					deallocateNode(node* _target);
+                    if (node->left && !node->right)
+					{
+						struct node* _target = node;
+						node = _target->left;
+						node->parent = _target->parent;
+						deallocateNode(_target);
+					}       
+                    else if (!node->left && node->right)
+					{
+						struct node* _target = node;
+						node = _target->right;
+						node->parent = _target->parent;
+						deallocateNode(_target);
+					}
+					else if (node->left && node->right)
+					{
+						struct node* _target = node;    //  1  1
+						node = minimum(_target->right); //중위 후속자를 찾아서 n이 참조하게 함
+						node->parent= _target->parent;
+						node->right = del_min(_target->right);
+						node->right->parent = node;
+						node->left = _target->left;
+						node->left->parent = node;
+						deallocateNode(_target);
+					}
+					else
+					{
+						deallocateNode(node);
+						return nullptr;
+					}
                 }
                 node->height = max(height(node->left), height(node->right)) + 1;
                 return balance(node);
             }
 
 			//key값이 있는지 체크
-            node* checkNode(node* moveNode, const key_type& key)
+            node* checkNode(node* node, const key_type& key)
             {
-                if (!moveNode)
+                if (!node)
                     return (nullptr);
-                if (moveNode->value.first == key)
-                    return (moveNode);
-                if (moveNode->value.first > key && moveNode->left )
-                    return checkNode(moveNode->left, key);
-                else if (moveNode->value.first < key && moveNode->right )
-                    return checkNode(moveNode->right, key);
+                if (node->value.first == key)
+                    return (node);
+                if (node->value.first > key && node->left )
+                    return checkNode(node->left, key);
+                else if (node->value.first < key && node->right )
+                    return checkNode(node->right, key);
                 return (nullptr);
             }
 
@@ -243,7 +290,7 @@ namespace ft
             {
                 if (!node->right)
                     return node;
-                return minimum(node->right);
+                return maximum(node->right);
             }
 
             node* del_min(node* node)
@@ -260,58 +307,33 @@ namespace ft
                 _allocPair.destroy(&node->value);
                 _allocNode.deallocate(node, 1);				
 			}
-
-            // void delete_min()  //최소값삭제는 다시 만들기
-            // {
-            //     if (!_top)
-            //         return nullptr;
-            //     _top = del_min(_top);
-            // }
-
-            // node* min() //최솟값 찾기
-            // {
-            //     if (!_top)
-            //         return nullptr;
-            //     return minimum(_top);
-            // }
-
 	};
 
     // Member functions //
     template < class Key, class T, class Compare, class Allocator>
-	map<Key, T, Compare, Allocator>::map(const Compare &comp, const Allocator &alloc) : _size(0), _allocPair(alloc), _comp(comp)
+	map<Key, T, Compare, Allocator>::map(const Compare &comp, const Allocator &alloc) : _size(0), _allocPair(alloc), _comp(comp) {}
+
+    template < class Key, class T, class Compare, class Allocator>
+    template< class InputIt >
+	map<Key, T, Compare, Allocator>::map(InputIt first, InputIt last, const Compare& comp, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*)
+    : _size(0), _allocPair(alloc), _comp(comp)
     {
         _top = createNode(value_type());
+        for (; first != last; ++first)
+            insert(*first);
+    }
+
+    template < class Key, class T, class Compare, class Allocator>
+	map<Key, T, Compare, Allocator>::map(const map& other)
+	: _size(0), _allocPair(other._allocPair), _comp(other._comp), _allocNode(other._allocNode)
+    {
+		_top = createNode(value_type());
+        for (const_iterator it = other.begin(); it != other.end(); ++it)
+            insert(*it);
     }
 
     // template < class Key, class T, class Compare, class Allocator>
-    // template< class InputIt >
-	// map<Key, T, Compare, Allocator>::map(InputIt first, InputIt last, const Compare& comp, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type*)
-    // : _size(0), _allocPair(alloc), _comp(comp)
-    // {
-    //     _lastNode = createNode(value_type());
-    //     _top = _lastNode;
-    //     _lastNode->left = _lastNode;
-    //     _lastNode->right = _lastNode;
-    //     for (; first != last; ++first)
-    //         insert(*first);
-    // }
-
-    // template < class Key, class T, class Compare, class Allocator>
-	// map<Key, T, Compare, Allocator>::map(const map& other)
-	// : _size(0), _allocPair(other._allocPair), _comp(other._comp), _allocNode(other._allocNode)
-    // {
-    //     _lastNode = createNode(ft::pair<const key_type, mapped_type>());
-    //     _top = _lastNode;
-    //     _lastNode->left = _lastNode;
-    //     _lastNode->right = _lastNode;
-    //     for (const_iterator it = other.begin(); it != other.end(); ++it)
-    //         insert(*it);
-    // }
-
-	// clear 구현해야함
-    // template < class Key, class T, class Compare, class Allocator>
-	// map<Key, T, Compare, Allocator>::~map(){ clear(); deallocateNode(_lastNode); }
+	// map<Key, T, Compare, Allocator>::~map(){ clear(); }
 
     template < class Key, class T, class Compare, class Allocator>
 	map<Key, T, Compare, Allocator> &map<Key, T, Compare, Allocator>::operator=( const map &other )
@@ -355,18 +377,18 @@ namespace ft
     }
 
 	// Modifiers //
-	// template < class Key, class T, class Compare, class Allocator>
-	// void map<Key, T, Compare, Allocator>::clear() { erase(begin(), end()); }
+	template < class Key, class T, class Compare, class Allocator>
+	void map<Key, T, Compare, Allocator>::clear() { erase(begin(), end()); }
 	
 	template < class Key, class T, class Compare, class Allocator>
 	ft::pair<typename map<Key, T, Compare, Allocator>::iterator, bool> map<Key, T, Compare, Allocator>::insert(const value_type &value)
 	{
 		node* haveNode = checkNode(_top, value.first);
 		if (haveNode)
-			return (ft::pair<iterator, bool>(iterator(haveNode, _top,_comp), false));
+			return (ft::pair<iterator, bool>(iterator(haveNode, _comp), false));
 		insertNode(_top, value);
 		++_size;
-		return (ft::pair<iterator, bool>(iterator(_newNode, _top,_comp), true));
+		return (ft::pair<iterator, bool>(iterator(_newNode, _comp), true));
 	}
 
 	// 똑같은게 있으면 안됨 없으면 추가
@@ -408,22 +430,24 @@ namespace ft
 	// 	while (first != last)
 	// 		insert(*first++);
 	// }
-	// template < class Key, class T, class Compare, class Allocator>
-	// void map<Key, T, Compare, Allocator>::erase (iterator position)
-	// {
-	// 	deleteNode(position.getNode(), position->first);
-	// 	--_size;
-	// }
-	// template < class Key, class T, class Compare, class Allocator>
-	// void map<Key, T, Compare, Allocator>::erase (iterator first, iterator last)
-	// {
-	// 	while (first != last)
-	// 	{
-	// 		iterator tmp(first);
-	// 		++first;
-	// 		erase(tmp);
-	// 	}
-	// }
+
+	template < class Key, class T, class Compare, class Allocator>
+	void map<Key, T, Compare, Allocator>::erase (iterator position)
+	{
+		deleteNode(_top, position.getNode()->value);
+		--_size;
+	}
+	
+	template < class Key, class T, class Compare, class Allocator>
+	void map<Key, T, Compare, Allocator>::erase (iterator first, iterator last)
+	{
+		while (first != last)
+		{
+			iterator tmp(first);
+			++first;
+			erase(tmp);
+		}
+	}
 
 	// template < class Key, class T, class Compare, class Allocator>
 	// size_t map<Key, T, Compare, Allocator>::erase (const key_type& key)
