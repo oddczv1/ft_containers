@@ -60,8 +60,8 @@ namespace ft
 			const T& at(const Key& key) const;
 			T& operator[](const Key &key);
 			// Iterators //
-            iterator begin()                        { return iterator(minimum(_top), _lastNode, _comp); }
-            const_iterator begin() const            { return const_iterator(minimum(_top), _lastNode, _comp); }
+            iterator begin()                        { return iterator(this->minimum(_top), _lastNode, _comp); }
+            const_iterator begin() const            { return const_iterator(this->minimum(_top), _lastNode, _comp); }
             iterator end()                          { return iterator(_lastNode, _lastNode, _comp); }
             const_iterator end() const              { return const_iterator(_lastNode, _lastNode, _comp); }
             reverse_iterator rbegin()               { return reverse_iterator(this->end()); }
@@ -638,7 +638,7 @@ namespace ft
 	template <typename Key, typename T, typename Compare, class Allocator>
 	bool operator<(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
 	{
-		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), lhs.value_comp());
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
 	template <typename Key, typename T, typename Compare, class Allocator>

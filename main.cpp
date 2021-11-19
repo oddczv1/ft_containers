@@ -24,7 +24,7 @@ int main()
 	// for(iter1 a = n1.begin(); a != n1.end(); a++)
     //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
-	typedef ft::map<std::string, int>::reverse_iterator iter;
+	//typedef ft::map<std::string, int>::reverse_iterator iter;
     ft::map<std::string, int> m1;
 	m1.insert(ft::make_pair("f", 6));
 	m1.insert(ft::make_pair("e", 5));
@@ -32,12 +32,21 @@ int main()
 	m1.insert(ft::make_pair("c", 3));
 	m1.insert(ft::make_pair("b", 2));
 	m1.insert(ft::make_pair("a", 1));
-	//m1.treePrint();
-	//m1.treePrint();
-	m1.erase("c");
 
-	for(iter a = m1.rbegin(); a != m1.rend(); a++)
-       std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+    ft::map<std::string, int> m2;
+	m2.insert(ft::make_pair("e", 5));
+	m2.insert(ft::make_pair("d", 4));	
+	m2.insert(ft::make_pair("c", 3));
+	m2.insert(ft::make_pair("b", 2));
+	m2.insert(ft::make_pair("a", 1));
+
+	std::cout << (m1 > m2) << std::endl;
+	//m1.treePrint();
+	//m1.treePrint();
+	//m1.erase("c");
+
+	// for(iter a = m1.rbegin(); a != m1.rend(); a++)
+    //    std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
 	// m1.insert(ft::make_pair("b", 2));
 	// m1.insert(ft::make_pair("d", 4));	

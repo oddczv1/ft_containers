@@ -17,7 +17,7 @@ namespace ft
 	struct enable_if<true, T> { typedef T type; };
 
 	// is_integral //
-    template <typename T>
+    template <class T>
     struct is_integral { static const bool value = false; };
     template <>
     struct is_integral<bool> { static const bool value = true; };
@@ -59,22 +59,8 @@ namespace ft
         return (n);
     }
 
-	// lexicographical_compare //
-	template <typename InputIt1, typename InputIt2, typename Compare = std::less<typename iterator_traits<InputIt1>::value_type>>
-	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Compare comp = Compare())
-	{
-		for (; first1 != last1 && first2 != last2; ++first1, ++first2)
-		{
-			if (comp(*first1, *first2))
-				return true;
-			if (comp(*first2, *first1))
-				return false;
-		}
-		return (first1 == last1) && (first2 != last2);
-	}
-
     // equal //
-    template <typename InputIt1, typename InputIt2>
+	template <class InputIt1, class InputIt2>
 	bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2)
 	{
 		for (; first1 != last1; ++first1, ++first2)
@@ -82,6 +68,22 @@ namespace ft
 				return false;
 		return true;
 	}
+
+	// lexicographical_compare //
+	template <class InputIt1, class InputIt2 >
+    bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2  first2, InputIt2  last2)
+    {
+        while (first1 != last1)
+        {
+            if (first2 == last2 || *first1 > *first2)
+				return false;
+            else if (*first1 < *first2)
+				return true;
+        	++first1;
+            ++first2;
+        }
+        return (first2 != last2);
+    }
 
 	// pair //
     template <class T1, class T2>
@@ -108,7 +110,6 @@ namespace ft
                 return (*this);
             }
     };
-    
     template <class T1, class T2>
     bool operator==(const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
     {
@@ -148,7 +149,7 @@ namespace ft
     }
 
     // swap //
-    template <typename U>
+    template <class U>
     void swap(U& a, U& b)
     {
         U tmp = a;
