@@ -16,12 +16,13 @@ namespace ft
 			typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::pointer				pointer;
 			typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::reference			reference;
             
-            bidirectional_iterator(node* Node = nullptr, const key_compare& comp = key_compare())
-            : _node(Node), _comp(comp) {}
+            bidirectional_iterator(node* Node = nullptr, node*  lastNode = nullptr, const key_compare& comp = key_compare())
+            : _node(Node), _lastNode(lastNode), _comp(comp) {}
 
             bidirectional_iterator(const bidirectional_iterator<value_type, Compare, node>& other)
             {
                 _node = other.getNode();
+                _lastNode = other.getLastNode();
                 _comp = other.getCompare();
             } 
 
@@ -32,12 +33,14 @@ namespace ft
                 if (this != &other)
                 {
                     _node = other._node;
+                    _lastNode = other._lastNode;
                     _comp = other._comp;
                 }
                 return (*this);
             }
 
-            node* getNode() const        { return _node; }
+            node* getNode() const               { return _node; }
+            node* getLastNode() const           { return _lastNode; }
             key_compare getCompare() const      { return _comp; }
             reference operator*() const         { return (_node->value); }
             pointer operator->() const          { return (&_node->value); }
@@ -101,6 +104,7 @@ namespace ft
 
         private:
         	node*       _node;
+            node*       _lastNode;
             key_compare _comp;
             
     };     

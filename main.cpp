@@ -8,47 +8,53 @@
 
 int main()
 {
-	//typedef std::map<std::string, int>::iterator iter;
-    // std::map<std::string, int> n1;
-	// n1.insert(std::make_pair("ac", 1));
+	//typedef std::map<std::string, int>::iterator iter1;
+    std::map<std::string, int> n1;
+	n1.insert(std::make_pair("a", 4));
+	n1.insert(std::make_pair("b", 5));
+	n1.insert(std::make_pair("c", 6));
+	n1.insert(std::make_pair("d", 7));
+	std::cout << n1.erase("c") << std::endl;
+	// std::cout << "[" << c->first << ", " << c->second << "]" << " " << std::endl;
 	// n1.insert(std::make_pair("aa", 3));
 	// n1.insert(std::make_pair("ab", 24));
 	// n1.insert(std::make_pair("ab", 333));
 	// std::cout << (n1["cc"] = 3) << std::endl;
 	// std::cout << n1.max_size() << std::endl;
-	// for(iter a = n1.begin(); a != n1.end(); a++)
+	// for(iter1 a = n1.begin(); a != n1.end(); a++)
     //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
+
+
+	// typedef ft::map<std::string, int>::iterator iter;
+    // ft::map<std::string, int> m1;
+	// m1.insert(ft::make_pair("f", 6));
+	// m1.insert(ft::make_pair("e", 5));
+	// m1.insert(ft::make_pair("d", 4));	
+	// m1.insert(ft::make_pair("c", 3));
+	// m1.insert(ft::make_pair("b", 2));
+	// m1.insert(ft::make_pair("a", 1));
+	// m1.treePrint();
+
+	// m1.clear();
+
+	// for(iter a = m1.begin(); a != m1.end(); a++)
+    //    std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+
+	// m1.insert(ft::make_pair("b", 2));
+	// m1.insert(ft::make_pair("d", 4));	
+	// m1.insert(ft::make_pair("e", 5));
+	// m1.insert(ft::make_pair("a", 1));
+	// m1.insert(ft::make_pair("f", 6));
+	// m1.insert(ft::make_pair("c", 3));
 	
-	// typedef ft::pair<std::string, int> pair;
-	// pair a = ft::make_pair("a", 3);
-	// pair b = ft::make_pair("b", 4);
-	// pair c = ft::make_pair("c", 5);
-	// pair d = ft::make_pair("d", 4);
-	// pair bb = ft::make_pair("e", 4);
-	// pair bb = ft::make_pair("f", 4);
-
-	typedef ft::map<std::string, int>::iterator iter;
-    ft::map<std::string, int> m1;
-	m1.insert(ft::make_pair("b", 2));
-	m1.insert(ft::make_pair("d", 4));	
-	m1.insert(ft::make_pair("e", 5));
-	m1.insert(ft::make_pair("a", 1));
-	m1.insert(ft::make_pair("f", 6));
-	m1.insert(ft::make_pair("c", 3));
-	iter b = m1.end();
-	std::cout << "[" << b->first << ", " << b->second << "]" << " " << std::endl;
-	//std::cout << "aaaaa"<< std::endl;
-	//m1.erase(b);
-	//std::cout << "bbbbb"<< std::endl;
-	//std::cout << m1["b"] << std::endl;
-	//std::cout << "cccc"<< std::endl;
-	for(iter a = m1.begin(); a != m1.end(); a++)
-       std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-
-
+	// m1.insert(ft::make_pair("f", 6));
+	// m1.insert(ft::make_pair("e", 5));
+	// m1.insert(ft::make_pair("d", 4));	
+	// m1.insert(ft::make_pair("c", 3));
+	// m1.insert(ft::make_pair("b", 2));
+	// m1.insert(ft::make_pair("a", 1));
 	
-
     //std::cout << "지워져야함1 " <<  a->first << std::endl;
 
 	//m1.erase(a);
