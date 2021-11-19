@@ -8,9 +8,44 @@
 
 int main()
 {
-	//typedef std::map<std::string, int>::iterator iter1;
-    // std::map<std::string, int> n1;
-	// n1.insert(std::make_pair("a", 4));
+	// typedef std::map<std::string, int>::iterator iter1;
+	// typedef std::map<std::string, int>::const_iterator iter2;
+
+	// ft::map<std::string, int>::iterator iter;
+	// ft::map<std::string, int>::const_iterator iter1;
+	// std::cout << (iter == iter1) << std::endl;
+	// std::cout << (iter != iter1) << std::endl;
+
+
+
+
+
+	// ft::map<int ,std::string>	map1;
+	// ft::map<int ,std::string>::iterator it;
+	// ft::pair<ft::map<int ,std::string>::iterator, bool> ret;
+	// ret = map1.insert(ft::make_pair(1, "one"));
+
+	// it = ret.first;
+	// std::cout << "inserted?: " << ret.second << '\n';
+	// std::cout << it->first << ": " << it->second << '\n';
+
+	// ret = map1.insert(ft::make_pair(1, "first"));
+	// it = ret.first;
+	// std::cout << "inserted?: " << ret.second << '\n';
+	// std::cout << it->first << ": " << it->second << '\n';
+
+	// it = map1.insert(map1.begin(), ft::make_pair(2, "two"));
+	// std::cout << it->first << ": " << it->second << '\n';
+
+
+
+
+	typedef ft::map<std::string, int>::const_iterator iter1;
+    ft::map<std::string, int> n1;
+	n1.insert(ft::make_pair("a", 4));
+	iter1 a = n1.begin();
+	std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+	
 	// n1.insert(std::make_pair("b", 5));
 	// n1.insert(std::make_pair("c", 6));
 	// n1.insert(std::make_pair("d", 7));
@@ -24,102 +59,26 @@ int main()
 	// for(iter1 a = n1.begin(); a != n1.end(); a++)
     //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
-	//typedef ft::map<std::string, int>::reverse_iterator iter;
-    ft::map<std::string, int> m1;
-	m1.insert(ft::make_pair("f", 6));
-	m1.insert(ft::make_pair("e", 5));
-	m1.insert(ft::make_pair("d", 4));	
-	m1.insert(ft::make_pair("c", 3));
-	m1.insert(ft::make_pair("b", 2));
-	m1.insert(ft::make_pair("a", 1));
 
-    ft::map<std::string, int> m2;
-	m2.insert(ft::make_pair("e", 5));
-	m2.insert(ft::make_pair("d", 4));	
-	m2.insert(ft::make_pair("c", 3));
-	m2.insert(ft::make_pair("b", 2));
-	m2.insert(ft::make_pair("a", 1));
+	// ft::map<std::string, int>::iterator iter;
+	// ft::map<std::string, int>::iterator iter1;
+	// std::cout << (iter == iter1) << std::endl;
+	// std::cout << (iter != iter1) << std::endl;
 
-	std::cout << (m1 > m2) << std::endl;
-	//m1.treePrint();
-	//m1.treePrint();
-	//m1.erase("c");
-
-	// for(iter a = m1.rbegin(); a != m1.rend(); a++)
-    //    std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-
-	// m1.insert(ft::make_pair("b", 2));
-	// m1.insert(ft::make_pair("d", 4));	
-	// m1.insert(ft::make_pair("e", 5));
-	// m1.insert(ft::make_pair("a", 1));
-	// m1.insert(ft::make_pair("f", 6));
-	// m1.insert(ft::make_pair("c", 3));
-	
-	// m1.insert(ft::make_pair("f", 6));
-	// m1.insert(ft::make_pair("e", 5));
-	// m1.insert(ft::make_pair("d", 4));	
-	// m1.insert(ft::make_pair("c", 3));
-	// m1.insert(ft::make_pair("b", 2));
-	// m1.insert(ft::make_pair("a", 1));
-	
-	//m1.erase(a);
-
-	// const auto [it, success] = m1.insert(bb);
-	// std::cout << it->first << "  " << it->second << "   " << success << std::endl;
-	// std::cout << m1.at("aa") << std::endl;
-	// std::cout << m1.at("bb") << std::endl;
-	// std::cout << m1.at("cc") << std::endl;
-	// std::cout << m1["aa"] << std::endl;
-	// std::cout << m1["bb"] << std::endl;
-	// std::cout << (m1["cc"] = 6) << std::endl;
-	//const auto [it, success] = m1.insert(ft::pair<std::string, int>("me", 20));
-
-
-	// for(iter a = m2.begin(); a != m2.end(); a++)
-    //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-	// std::cout << m1.max_size()<< std::endl;
-
-	// typedef std::map<std::string, int>::iterator iter1;
-
-
-
-	// n1.insert(std::pair<std::string, int>("me", 20));
-	// n1.insert(std::pair<std::string, int>("me1", 13));
-	// n1["lme"] = 3;
-	// n1.at("lme") = 4;
-	// std::map<std::string, int> n2(n1);
-	// //std::cout << n2.count("me1") << std::endl;
-	// for(iter1 a = n2.begin(); a != n2.end(); a++)
-    //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-	// std::cout << n1.max_size()<< std::endl;
-	// std::cout << std::endl;
-	/*
-
-	std::map<std::string, int> m;
-    std::map<std::string, int> m1(m.begin(), m.end());
-	typedef std::map<std::string, int>::iterator iter;
-	typedef std::pair<iter,bool> aa;
-	aa bb = m1.insert(std::pair<std::string, int>("me", 20));
-	if (!bb.second)
-	{
-    	bb.first->second = 30;
-	}
-
- */
-    // Overload 3: insert from rvalue reference
-
-
-
-	/*
-	m.insert(ft::pair<std::string, int>("me", 20));
-	std::map<std::string, int>::iterator iter;
-    
-    for(iter = m.begin(); iter != m.end(); iter++)
-	{
-        std::cout << "[" << iter->first << ", " << iter->second << "]" << " " ;
-    }
-	std::cout << std::endl;*/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 //vector

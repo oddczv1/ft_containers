@@ -11,11 +11,11 @@ int	main()
 
 	mapIntStr	mp(lst.begin(), lst.end());
 
-	mapIntStr::iterator	it = mp.begin();
+	//mapIntStr::iterator	it = mp.begin();
 
-	(*it).second = "first";
+	// (*it).second = "first";
 
-	mapIntStr::const_iterator	cit = mp.begin();
+	// mapIntStr::const_iterator	cit = mp.begin();
 
-	(*cit).second = "zero"; // Error here.
+	// (*cit).second = "zero"; // Error here.
 }

@@ -12,9 +12,9 @@ srcs="srcs"
 CC="clang++"
 CFLAGS="-Werror -Wextra -Wall -std=c++98"
 
-if false; then
-  CFLAGS+=" -fsanitize=address -g3"
-fi
+# if false; then
+#   CFLAGS+=" -fsanitize=address -g3"
+# fi
 
 emoji[0]="😆"
 emoji[1]="🥵"

@@ -18,9 +18,9 @@ int	main()
 	std::cout << "inserted?: " << ret.second << '\n';
 	std::cout << it->first << ": " << it->second << '\n';
 
+//////////////////////////////////////////////////////////
 	it = map1.insert(map1.begin(), PAIR(2, "two"));
 	std::cout << it->first << ": " << it->second << '\n';
-
 	it = map1.insert(map1.begin(), PAIR(2, "second"));
 	std::cout << it->first << ": " << it->second << '\n';
 

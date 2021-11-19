@@ -239,7 +239,7 @@ namespace ft
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::begin() { return (iterator(_first)); }
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::const_iterator vector<T, Allocator>::begin() const { return (iterator(_first)); }
+	typename vector<T, Allocator>::const_iterator vector<T, Allocator>::begin() const { return (const_iterator(_first)); }
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::end() { return (iterator(_last)); }
 	template<class T, class Allocator>
@@ -247,11 +247,11 @@ namespace ft
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::reverse_iterator vector<T, Allocator>::rbegin() { return (reverse_iterator(this->end())); }
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::const_reverse_iterator vector<T, Allocator>::rbegin() const { return (reverse_iterator(this->end())); }
+	typename vector<T, Allocator>::const_reverse_iterator vector<T, Allocator>::rbegin() const { return (const_reverse_iterator(this->end())); }
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::reverse_iterator vector<T, Allocator>::rend() { return (reverse_iterator(this->begin())); }
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::const_reverse_iterator vector<T, Allocator>::rend() const { return (reverse_iterator(this->begin())); }
+	typename vector<T, Allocator>::const_reverse_iterator vector<T, Allocator>::rend() const { return (const_reverse_iterator(this->begin())); }
 
 
 	// capacity //

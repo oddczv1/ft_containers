@@ -14,7 +14,7 @@ namespace ft
             typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::value_type           value_type;
             typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::iterator_category	iterator_category;
 			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::difference_type		difference_type;
-			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::pointer				pointer;
+			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::pointer			    pointer;
 			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::reference			reference;
             
             bidirectional_iterator(node* Node = nullptr, node*  lastNode = nullptr, const key_compare& comp = key_compare())
@@ -28,7 +28,9 @@ namespace ft
             } 
 
             ~bidirectional_iterator() {}
-            
+
+
+
             bidirectional_iterator& operator=(const bidirectional_iterator& other)
             {
                 if (this != &other)
@@ -100,15 +102,19 @@ namespace ft
                 return tem;
             }
 
+            //bool operator==(const bidirectional_iterator<value_type, Compare, node>& it) const   { return (it._node == _node); }
             bool operator==(const bidirectional_iterator& it) const   { return (it._node == _node); }
             bool operator!=(const bidirectional_iterator& it) const   { return (it._node != _node); }
+
+            operator bidirectional_iterator<const value_type, Compare, node> () const 
+            { return (bidirectional_iterator<const value_type, Compare, node>(_node, _lastNode, _comp)); }
 
         private:
         	node*       _node;
             node*       _lastNode;
             key_compare _comp;
             
-    };     
+    };
 }
 
 #endif

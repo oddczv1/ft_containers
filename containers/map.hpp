@@ -22,7 +22,7 @@ namespace ft
 			// Member types //
 			typedef Key 																	key_type;
 			typedef	T 																		mapped_type;
-			typedef typename ft::pair<const key_type, T> 									value_type;
+			typedef typename ft::pair<const Key, T> 										value_type;
 			typedef size_t 																	size_type;
 			typedef typename std::ptrdiff_t 												difference_type;
 			typedef Compare 																key_compare;
@@ -31,8 +31,8 @@ namespace ft
 			typedef const value_type& 														const_reference;
 			typedef typename Allocator::pointer 											pointer;
 			typedef typename Allocator::const_pointer 										const_pointer;
-			typedef typename ft::bidirectional_iterator<value_type, Compare, node>			iterator;
-			typedef typename ft::bidirectional_iterator<const value_type, Compare, node>	const_iterator;
+			typedef ft::bidirectional_iterator<value_type, Compare, node>					iterator;
+			typedef ft::bidirectional_iterator<const value_type, Compare, node>				const_iterator;
 			typedef ft::reverse_iterator<iterator>											reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 			// Member classes //
@@ -60,8 +60,8 @@ namespace ft
 			const T& at(const Key& key) const;
 			T& operator[](const Key &key);
 			// Iterators //
-            iterator begin()                        { return iterator(this->minimum(_top), _lastNode, _comp); }
-            const_iterator begin() const            { return const_iterator(this->minimum(_top), _lastNode, _comp); }
+            iterator begin()                        { node *n = _top; while (n && n->left) n = n->left;  return iterator(n, _lastNode, _comp); }
+			const_iterator begin() const            { node *n = _top; while (n && n->left) n = n->left;  return const_iterator(n, _lastNode, _comp); }
             iterator end()                          { return iterator(_lastNode, _lastNode, _comp); }
             const_iterator end() const              { return const_iterator(_lastNode, _lastNode, _comp); }
             reverse_iterator rbegin()               { return reverse_iterator(this->end()); }
@@ -366,7 +366,7 @@ namespace ft
 	map<Key, T, Compare, Allocator>::map(const map& other)
 	: _size(0), _allocPair(other._allocPair), _comp(other._comp), _allocNode(other._allocNode)
     {
-		_lastNode = createNode(ft::pair<const key_type, mapped_type>());
+		_lastNode = createNode(value_type());
 		_lastNode->height = 0;
 		_top = _lastNode;
         for (const_iterator it = other.begin(); it != other.end(); ++it)
@@ -658,6 +658,7 @@ namespace ft
 	{
 		return !(lhs > rhs);
 	}
+
 }
 
 #endif

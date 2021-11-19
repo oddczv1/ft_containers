@@ -19,7 +19,8 @@ int	main()
 
 		NS::pair<lmap::iterator, bool>	p = b.insert(NS::make_pair(Leaky("5"), Leaky("e")));
 		std::cout << p.second;
-		b.insert(p.first, NS::make_pair(Leaky("6"), Leaky("f")));
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		b.insert(p.first, NS::make_pair(Leaky("6"), Leaky("f"))); 
 
 		vec.push_back(NS::make_pair(Leaky("7"), Leaky("g")));
 		vec.push_back(NS::make_pair(Leaky("8"), Leaky("h")));
