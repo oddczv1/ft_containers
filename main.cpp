@@ -9,12 +9,12 @@
 int main()
 {
 	//typedef std::map<std::string, int>::iterator iter1;
-    std::map<std::string, int> n1;
-	n1.insert(std::make_pair("a", 4));
-	n1.insert(std::make_pair("b", 5));
-	n1.insert(std::make_pair("c", 6));
-	n1.insert(std::make_pair("d", 7));
-	std::cout << n1.erase("c") << std::endl;
+    // std::map<std::string, int> n1;
+	// n1.insert(std::make_pair("a", 4));
+	// n1.insert(std::make_pair("b", 5));
+	// n1.insert(std::make_pair("c", 6));
+	// n1.insert(std::make_pair("d", 7));
+	// std::cout << n1.erase("c") << std::endl;
 	// std::cout << "[" << c->first << ", " << c->second << "]" << " " << std::endl;
 	// n1.insert(std::make_pair("aa", 3));
 	// n1.insert(std::make_pair("ab", 24));
@@ -24,22 +24,20 @@ int main()
 	// for(iter1 a = n1.begin(); a != n1.end(); a++)
     //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
+	typedef ft::map<std::string, int>::reverse_iterator iter;
+    ft::map<std::string, int> m1;
+	m1.insert(ft::make_pair("f", 6));
+	m1.insert(ft::make_pair("e", 5));
+	m1.insert(ft::make_pair("d", 4));	
+	m1.insert(ft::make_pair("c", 3));
+	m1.insert(ft::make_pair("b", 2));
+	m1.insert(ft::make_pair("a", 1));
+	//m1.treePrint();
+	//m1.treePrint();
+	m1.erase("c");
 
-
-	// typedef ft::map<std::string, int>::iterator iter;
-    // ft::map<std::string, int> m1;
-	// m1.insert(ft::make_pair("f", 6));
-	// m1.insert(ft::make_pair("e", 5));
-	// m1.insert(ft::make_pair("d", 4));	
-	// m1.insert(ft::make_pair("c", 3));
-	// m1.insert(ft::make_pair("b", 2));
-	// m1.insert(ft::make_pair("a", 1));
-	// m1.treePrint();
-
-	// m1.clear();
-
-	// for(iter a = m1.begin(); a != m1.end(); a++)
-    //    std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+	for(iter a = m1.rbegin(); a != m1.rend(); a++)
+       std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 
 	// m1.insert(ft::make_pair("b", 2));
 	// m1.insert(ft::make_pair("d", 4));	
@@ -55,14 +53,7 @@ int main()
 	// m1.insert(ft::make_pair("b", 2));
 	// m1.insert(ft::make_pair("a", 1));
 	
-    //std::cout << "지워져야함1 " <<  a->first << std::endl;
-
 	//m1.erase(a);
-	//std::cout << "지워져야함2 " <<  m1["a"] << std::endl;
-
-
-
-
 
 	// const auto [it, success] = m1.insert(bb);
 	// std::cout << it->first << "  " << it->second << "   " << success << std::endl;

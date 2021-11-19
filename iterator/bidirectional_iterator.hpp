@@ -6,15 +6,16 @@
 
 namespace ft
 {
-    template <typename value_type, typename Compare, typename node>
+    template <typename T, typename Compare, typename node>
     class bidirectional_iterator
     {
         public:
-            typedef Compare                                                                                 key_compare;
-            typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
-			typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::difference_type		difference_type;
-			typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::pointer				pointer;
-			typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::reference			reference;
+            typedef Compare                                                                         key_compare;
+            typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::value_type           value_type;
+            typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::iterator_category	iterator_category;
+			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::difference_type		difference_type;
+			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::pointer				pointer;
+			typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::reference			reference;
             
             bidirectional_iterator(node* Node = nullptr, node*  lastNode = nullptr, const key_compare& comp = key_compare())
             : _node(Node), _lastNode(lastNode), _comp(comp) {}
