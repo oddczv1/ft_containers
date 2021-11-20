@@ -149,10 +149,10 @@ namespace ft
     }
 
     // swap //
-    template <class U>
-    void swap(U& a, U& b)
+    template <class T>
+    void swap(T& a, T& b)
     {
-        U tmp = a;
+        T tmp = a;
         a = b;
         b = tmp;
     }

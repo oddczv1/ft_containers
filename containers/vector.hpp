@@ -498,11 +498,11 @@ namespace ft
 	}
 
 	// swap //
-	template< class T, class Allocator >
-	void swap(vector<T, Allocator>& lhs, vector<T, Allocator>& rhs)
-	{
-		lhs.swap(rhs);
-	};
+	// template< class T, class Allocator >
+	// void swap(vector<T, Allocator>& lhs, vector<T, Allocator>& rhs)
+	// {
+	// 	lhs.swap(rhs);
+	// };
 }
 
 #endif

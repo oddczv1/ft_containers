@@ -31,7 +31,7 @@ namespace ft
 
 
 
-            bidirectional_iterator& operator=(const bidirectional_iterator& other)
+            bidirectional_iterator& operator=(const bidirectional_iterator<value_type, Compare, node>& other)
             {
                 if (this != &other)
                 {
@@ -41,6 +41,8 @@ namespace ft
                 }
                 return (*this);
             }
+            
+            
 
             node* getNode() const               { return _node; }
             node* getLastNode() const           { return _lastNode; }
@@ -102,9 +104,9 @@ namespace ft
                 return tem;
             }
 
-            //bool operator==(const bidirectional_iterator<value_type, Compare, node>& it) const   { return (it._node == _node); }
             bool operator==(const bidirectional_iterator& it) const   { return (it._node == _node); }
             bool operator!=(const bidirectional_iterator& it) const   { return (it._node != _node); }
+
 
             operator bidirectional_iterator<const value_type, Compare, node> () const 
             { return (bidirectional_iterator<const value_type, Compare, node>(_node, _lastNode, _comp)); }
@@ -115,6 +117,28 @@ namespace ft
             key_compare _comp;
             
     };
+
+    template <typename T, typename Compare, typename node>
+    bool operator==(ft::bidirectional_iterator<const T, Compare, node>& lsh, 
+        ft::bidirectional_iterator<T, Compare, node>& rsh)   
+    { return (lsh.getNode() == rsh.getNode()); }
+
+    template <typename T, typename Compare, typename node>
+    bool operator==(ft::bidirectional_iterator<T, Compare, node>& lsh, 
+        ft::bidirectional_iterator<const T, Compare, node>& rsh)   
+    { return (lsh.getNode() == rsh.getNode()); }
+
+    template <typename T, typename Compare, typename node>
+    bool operator!=(ft::bidirectional_iterator<const T, Compare, node>& lsh, 
+        ft::bidirectional_iterator<T, Compare, node>& rsh)   
+    { return (lsh.getNode() != rsh.getNode()); }
+
+    template <typename T, typename Compare, typename node>
+    bool operator!=(ft::bidirectional_iterator<T, Compare, node>& lsh, 
+        ft::bidirectional_iterator<const T, Compare, node>& rsh)   
+    { return (lsh.getNode() != rsh.getNode()); }
+
+    
 }
 
 #endif

@@ -55,6 +55,7 @@ namespace ft
 			map(const map& other);
 			~map();
 			map &operator=( const map &other );
+		
 			// // Element access //
 			T& at(const Key& key);
 			const T& at(const Key& key) const;
@@ -86,8 +87,8 @@ namespace ft
 			size_type count(const Key &key);
 			iterator find(const Key &key);
 			const_iterator find(const Key &key) const;
-			ft::pair<iterator,iterator> equal_range(const Key &key);
-			ft::pair<const_iterator,const_iterator> equal_range(const Key &key) const;
+			ft::pair<iterator, iterator> equal_range(const Key &key);
+			ft::pair<const_iterator, const_iterator> equal_range(const Key &key) const;
 			iterator lower_bound(const Key &key);
 			const_iterator lower_bound(const Key &key) const;
 			iterator upper_bound(const Key &key);
@@ -358,8 +359,8 @@ namespace ft
         _lastNode = createNode(value_type());
 		_lastNode->height = 0;
 		_top = _lastNode;
-        for (; first != last; ++first)
-            insert(*first);
+		while (first != last)
+			insert(*first++);
     }
 
     template < class Key, class T, class Compare, class Allocator>
@@ -379,9 +380,11 @@ namespace ft
     template < class Key, class T, class Compare, class Allocator>
 	map<Key, T, Compare, Allocator> &map<Key, T, Compare, Allocator>::operator=( const map &other )
     {
-        map tmp(other);
-        this->swap(tmp);
-        return (*this);
+		if (&other == this)
+			return (*this);
+		this->clear();
+		this->insert(other.begin(), other.end());
+		return (*this);
     }
 
     // Element access //
@@ -432,33 +435,14 @@ namespace ft
 		return (ft::pair<iterator, bool>(iterator(_newNode, _lastNode, _comp), true));
 	}
 
-	//똑같은게 있으면 안됨 없으면 추가
-	template < class Key, class T, class Compare, class Allocator>
-	typename map<Key, T, Compare, Allocator>::iterator map<Key, T, Compare, Allocator>::insert(iterator hint, const value_type& value)
-	{
-		if (hint->first > value.first)
-		{
-			iterator prev(hint);
-			--prev;
-			while (prev != end() && prev->first >= value.first)
-			{
-				--hint;
-				--prev;
-			}
-		}
-		else if (hint->first < value.first)
-		{
-			iterator next(hint);
-			++next;
-			while (next != end() && next->first <= value.first)
-			{
-				++hint;
-				++next;
-			}
-		}
 
-		if (hint != end() && value.first == hint->first)
-			return (hint);
+	template < class Key, class T, class Compare, class Allocator>
+	typename map<Key, T, Compare, Allocator>::iterator map<Key, T, Compare, Allocator>::insert(iterator hint, const value_type &value)
+	{
+		(void)hint;
+		node* haveNode = checkNode(_top, value.first);
+		if (haveNode)
+			return (iterator(haveNode, _lastNode, _comp));
 		insertNode(_top, value);
 		++_size;
 		return (iterator(_newNode, _lastNode, _comp));
@@ -504,11 +488,26 @@ namespace ft
 	template < class Key, class T, class Compare, class Allocator>
 	void map<Key, T, Compare, Allocator>::swap(map &other)
 	{
-		ft::swap(_top, other._top);
-		ft::swap(_size, other._size);
-		ft::swap(_comp, other._comp);
-		ft::swap(_allocPair, other._allocPair);
-		ft::swap(_allocNode, other._allocNode);
+		node* tem_top = _top;
+		node* tem_lastNode = _lastNode;
+		size_type tem_size = _size;
+        key_compare tem_comp = _comp;
+        allocator_type tem_allocPair = _allocPair;
+        std::allocator<node> tem_allocNode = _allocNode;
+
+		_top = other._top;
+		_lastNode = other._lastNode;
+		_size = other._size;
+		_comp = other._comp;
+		_allocPair = other._allocPair;
+		_allocNode = other._allocNode;
+
+		other._top = tem_top;
+		other._lastNode = tem_lastNode;
+		other._size = tem_size;
+		other._comp = tem_comp;
+		other._allocPair = tem_allocPair;
+		other._allocNode = tem_allocNode;
 	}
 
 	// Lookup //
@@ -535,7 +534,7 @@ namespace ft
 	{
 		node* tmp = checkNode(_top, key);
 		if (tmp)
-			return iterator(tmp, _lastNode, _comp);
+			return const_iterator(tmp, _lastNode, _comp);
 		return end();
 	}
 
@@ -543,34 +542,14 @@ namespace ft
 	ft::pair<typename map<Key, T, Compare, Allocator>::iterator, typename map<Key, T, Compare, Allocator>::iterator>
 		map<Key, T, Compare, Allocator>::equal_range(const Key &key)
 	{
-		iterator it = upper_bound(key);
-		if (it != begin())
-		{
-			--it;
-			if (_comp(it->first, key) || _comp(key, it->first))
-				++it;
-		}
-		iterator next(it);
-		if (it != end())
-			++next;
-		return ft::make_pair<iterator, iterator>(it, next);
+		return (ft::make_pair(this->lower_bound(key), this->upper_bound(key)));
 	}
 
 	template < class Key, class T, class Compare, class Allocator>
 	ft::pair<typename map<Key, T, Compare, Allocator>::const_iterator, typename map<Key, T, Compare, Allocator>::const_iterator>
 		map<Key, T, Compare, Allocator>::equal_range(const Key &key) const
 	{
-		const_iterator it = upper_bound(key);
-		if (it != begin())
-		{
-			--it;
-			if (_comp(it->first, key) || _comp(key, it->first))
-				++it;
-		}
-		const_iterator next(it);
-		if (it != end())
-			++next;
-		return ft::make_pair<const_iterator, const_iterator>(it, next);
+		return (ft::make_pair(this->lower_bound(key), this->upper_bound(key)));
 	}
 
 	template < class Key, class T, class Compare, class Allocator>
@@ -613,13 +592,6 @@ namespace ft
 			if (_comp(key, it->first))
 				break;
 		return it;
-	}
-
-	// Non-member functions //
-	template <typename Key, typename T, typename Compare, class Allocator>
-	void swap(map<Key, T, Compare, Allocator> &x, map<Key, T, Compare, Allocator> &y)
-	{
-		x.swap(y);
 	}
 
 	template <typename Key, typename T, typename Compare, class Allocator>

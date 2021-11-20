@@ -5,9 +5,72 @@
 #include <vector>
 #include <stack>
 #include <map>
+#include <list>
+
+#define T1 int
+#define T2 std::string
+
+ft::map<T1, T2> mp;
+ft::map<T1, T2>::iterator it = mp.end();
+
+
+template <typename T>
+std::string	printPair(const T &iterator, bool nl = true)
+{
+	std::cout << "key: " << iterator->first << " | value: " << iterator->second;
+	if (nl)
+		std::cout << std::endl;
+	return ("");
+}
+
+
+void	ft_find(T1 const &k)
+{
+	ft::map<T1, T2>::iterator ret = mp.find(k);
+
+	if (ret != it)
+		printPair(ret);
+	else
+		std::cout << "map::find(" << k << ") returned end()" << std::endl;
+}
+
+
+void	ft_count(T1 const &k)
+{
+	std::cout << "map::count(" << k << ")\treturned [" << mp.count(k) << "]" << std::endl;
+}
 
 int main()
 {
+	mp[42] = "fgzgxfn";
+	mp[25] = "funny";
+	mp[80] = "hey";
+	mp[12] = "no";
+	mp[27] = "bee";
+	mp[90] = "8";
+	std::cout << mp.size() << std::endl;
+
+	std::cout << "\t-- FIND --" << std::endl;
+	ft_find(12);
+	ft_find(3);
+	ft_find(35);
+	ft_find(90);
+	ft_find(100);
+
+	std::cout << "\t-- COUNT --" << std::endl;
+	ft_count(-3);
+	ft_count(12);
+	ft_count(3);
+	ft_count(35);
+	ft_count(90);
+	ft_count(100);
+
+	mp.find(27)->second = "newly inserted mapped_value";
+	std::cout << mp.size() << std::endl;
+
+	ft::map<T1, T2>  c_map(mp.begin(), mp.end());
+	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
+	//std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
 	// typedef std::map<std::string, int>::iterator iter1;
 	// typedef std::map<std::string, int>::const_iterator iter2;
 
@@ -17,6 +80,7 @@ int main()
 	// std::cout << (iter != iter1) << std::endl;
 
 	// std::map<int ,std::string>	map1;
+	// map1["dddd"] = 2;
 	// std::map<int ,std::string>	map2;
 	// std::map<int ,std::string>::iterator it;
 	// std::map<int ,std::string>::iterator it2;
@@ -29,55 +93,6 @@ int main()
 	// std::cout << map1[1] << '\n';
 	// std::cout << it->first << ": " << it->second << '\n';
 
-	// key가 있으면 그 키의 위치
-	// key가 없으면 추가된 키의 위치
-	// 그럼 hin의 역할은?
-
-
-	ft::map<int ,std::string>	map1;
-	ft::map<int ,std::string>::iterator it;
-	ft::pair<ft::map<int ,std::string>::iterator, bool> ret;
-	ret = map1.insert(ft::make_pair(1, "one"));
-
-	it = ret.first;
-	std::cout << "inserted?: " << ret.second << '\n';
-	std::cout << it->first << ": " << it->second << '\n';
-
-	ret = map1.insert(ft::make_pair(1, "first"));
-	it = ret.first;
-	std::cout << "inserted?: " << ret.second << '\n';
-	std::cout << it->first << ": " << it->second << '\n';
-
-	it = map1.insert(map1.begin(), ft::make_pair(1, "two"));
-	std::cout << it->first << ": " << it->second << '\n';
-
-
-
-
-	// typedef ft::map<std::string, int>::iterator iter1;
-    // ft::map<std::string, int> n1;
-	// n1.insert(ft::make_pair("a", 4));
-	// iter1 a = n1.begin();
-	// std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-	
-	// n1.insert(std::make_pair("b", 5));
-	// n1.insert(std::make_pair("c", 6));
-	// n1.insert(std::make_pair("d", 7));
-	// std::cout << n1.erase("c") << std::endl;
-	// std::cout << "[" << c->first << ", " << c->second << "]" << " " << std::endl;
-	// n1.insert(std::make_pair("aa", 3));
-	// n1.insert(std::make_pair("ab", 24));
-	// n1.insert(std::make_pair("ab", 333));
-	// std::cout << (n1["cc"] = 3) << std::endl;
-	// std::cout << n1.max_size() << std::endl;
-	// for(iter1 a = n1.begin(); a != n1.end(); a++)
-    //     std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
-
-
-	// ft::map<std::string, int>::iterator iter;
-	// ft::map<std::string, int>::iterator iter1;
-	// std::cout << (iter == iter1) << std::endl;
-	// std::cout << (iter != iter1) << std::endl;
 
 }
 
@@ -189,7 +204,7 @@ int main()
 	std::cout <<std::endl;
     std::cout <<numbers[2] <<std::endl;
 
- 
+
     ft::vector<int> v;
 	v.push_back(0);
 	v.push_back(1);
@@ -214,7 +229,7 @@ void my_reverse(BidirIt first, BidirIt last)
         *last = tmp;
     }
 }
- 
+
 int main()
 {
     ft::vector<int> v;
@@ -223,7 +238,7 @@ int main()
 	v.push_back(2);
 	v.push_back(3);
     my_reverse(v.begin(), v.end());
-    for (int i = 0; i < 5; i++) 
+    for (int i = 0; i < 5; i++)
         std::cout << v[i] << ' ';
     std::cout << '\n';
 }
