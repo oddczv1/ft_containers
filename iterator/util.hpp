@@ -7,6 +7,7 @@
 # include <cstddef> //std::size_t, std::ptrdiff_t
 # include <functional> //std::less
 # include "iterator.hpp"
+# include <cstring> //std::memcpy
 
 namespace ft
 {

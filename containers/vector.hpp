@@ -114,6 +114,7 @@ namespace ft
 		for (size_type i = 0; i < count; i++)
 			_alloc.construct(_last++, value);
 	}
+
 	template<typename T, typename Allocator>
 	template<typename InputIt>
 	vector<T, Allocator>::vector(InputIt first, InputIt last, const Allocator &alloc,
@@ -126,8 +127,9 @@ namespace ft
 		for (long i = 0; i < count; i++)
 			_alloc.construct(_last++, *first++);
 	}
+
 	template<typename T, typename Allocator>
-	vector<T, Allocator>::vector<T, Allocator>::vector(const vector &other)
+	vector<T, Allocator>::vector(const vector &other)
 	{
 		size_type count = other.size();
 		_first = _alloc.allocate(count);
@@ -136,7 +138,6 @@ namespace ft
 		std::memcpy(_first, &*other.begin(), sizeof(T) * count);
 	}
 
-
 	// destructor //
 	template<class T, class Allocator>
 	vector<T, Allocator>::~vector()
@@ -144,7 +145,6 @@ namespace ft
 		this->clear();
 		_alloc.deallocate(_first, this->capacity());
 	}
-
 
 	// operator //
 	template<class T, class Allocator>
