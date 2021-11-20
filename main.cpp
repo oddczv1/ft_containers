@@ -1,5 +1,5 @@
-#include "./containers/vector.hpp"
-#include "./containers/stack.hpp"
+//#include "./containers/vector.hpp"
+//#include "./containers/stack.hpp"
 #include "./containers/map.hpp"
 #include "./iterator/util.hpp"
 #include <vector>
@@ -16,35 +16,49 @@ int main()
 	// std::cout << (iter == iter1) << std::endl;
 	// std::cout << (iter != iter1) << std::endl;
 
+	// std::map<int ,std::string>	map1;
+	// std::map<int ,std::string>	map2;
+	// std::map<int ,std::string>::iterator it;
+	// std::map<int ,std::string>::iterator it2;
+	// std::pair<std::map<int ,std::string>::iterator, bool> ret;
+	// map1.insert(std::make_pair(1, "one"));
+	// ret = map2.insert(std::make_pair(4, "ssss"));
 
-
-
-
-	// ft::map<int ,std::string>	map1;
-	// ft::map<int ,std::string>::iterator it;
-	// ft::pair<ft::map<int ,std::string>::iterator, bool> ret;
-	// ret = map1.insert(ft::make_pair(1, "one"));
-
-	// it = ret.first;
-	// std::cout << "inserted?: " << ret.second << '\n';
+	// it = map1.insert(ret.first, std::make_pair(1, "two"));
+	// std::cout << map1.begin()->first << ": " << map1.begin()->second << '\n';
+	// std::cout << map1[1] << '\n';
 	// std::cout << it->first << ": " << it->second << '\n';
 
-	// ret = map1.insert(ft::make_pair(1, "first"));
-	// it = ret.first;
-	// std::cout << "inserted?: " << ret.second << '\n';
-	// std::cout << it->first << ": " << it->second << '\n';
-
-	// it = map1.insert(map1.begin(), ft::make_pair(2, "two"));
-	// std::cout << it->first << ": " << it->second << '\n';
+	// key가 있으면 그 키의 위치
+	// key가 없으면 추가된 키의 위치
+	// 그럼 hin의 역할은?
 
 
+	ft::map<int ,std::string>	map1;
+	ft::map<int ,std::string>::iterator it;
+	ft::pair<ft::map<int ,std::string>::iterator, bool> ret;
+	ret = map1.insert(ft::make_pair(1, "one"));
+
+	it = ret.first;
+	std::cout << "inserted?: " << ret.second << '\n';
+	std::cout << it->first << ": " << it->second << '\n';
+
+	ret = map1.insert(ft::make_pair(1, "first"));
+	it = ret.first;
+	std::cout << "inserted?: " << ret.second << '\n';
+	std::cout << it->first << ": " << it->second << '\n';
+
+	it = map1.insert(map1.begin(), ft::make_pair(1, "two"));
+	std::cout << it->first << ": " << it->second << '\n';
 
 
-	typedef ft::map<std::string, int>::const_iterator iter1;
-    ft::map<std::string, int> n1;
-	n1.insert(ft::make_pair("a", 4));
-	iter1 a = n1.begin();
-	std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
+
+
+	// typedef ft::map<std::string, int>::iterator iter1;
+    // ft::map<std::string, int> n1;
+	// n1.insert(ft::make_pair("a", 4));
+	// iter1 a = n1.begin();
+	// std::cout << "[" << a->first << ", " << a->second << "]" << " " << std::endl;
 	
 	// n1.insert(std::make_pair("b", 5));
 	// n1.insert(std::make_pair("c", 6));

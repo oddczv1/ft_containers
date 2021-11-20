@@ -459,8 +459,9 @@ namespace ft
 
 		if (hint != end() && value.first == hint->first)
 			return (hint);
+		insertNode(_top, value);
 		++_size;
-		return (iterator(insertNode(hint.getNode(), value), _lastNode, _comp));
+		return (iterator(_newNode, _lastNode, _comp));
 	}
 
 	template < class Key, class T, class Compare, class Allocator>
@@ -522,7 +523,7 @@ namespace ft
 	}
 	
 	template < class Key, class T, class Compare, class Allocator>
-	typename map<Key, T, Compare, Allocator>::iterator map<Key, T, Compare, Allocator>::map<Key, T, Compare, Allocator>::find(const Key &key)
+	typename map<Key, T, Compare, Allocator>::iterator map<Key, T, Compare, Allocator>::find(const Key &key)
 	{
 		node* tem = checkNode(_top, key);
 		if (tem)
