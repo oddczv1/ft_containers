@@ -12,6 +12,7 @@ void	checkErase(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct,
 
 int		main(void)
 {
+	
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
 
 	for (unsigned long int i = 0; i < vct.size(); ++i)

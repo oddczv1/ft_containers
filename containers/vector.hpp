@@ -86,7 +86,7 @@ namespace ft
 			pointer         _count;
 			
 			// error //
-			void sizeError(const size_type& n)
+			void sizeError(size_type n)
 			{
 				if (n >= this->size())
 					throw (std::out_of_range("vector::sizeError"));
@@ -128,14 +128,16 @@ namespace ft
 			_alloc.construct(_last++, *first++);
 	}
 
+
 	template<typename T, typename Allocator>
-	vector<T, Allocator>::vector(const vector &other)
+	vector<T, Allocator>::vector(const vector &other): _alloc(other._alloc), _first(nullptr), _last(nullptr), _count(nullptr)
 	{
-		size_type count = other.size();
-		_first = _alloc.allocate(count);
-		_last = _first + count;
-		_count = _first + other.capacity();
-		std::memcpy(_first, &*other.begin(), sizeof(T) * count);
+		this->insert(this->begin(), other.begin(), other.end());
+		// size_type count = other.size();
+		// _first = _alloc.allocate(count);
+		// _last = _first + count;
+		// _count = _first + other.capacity();
+		// std::memcpy(_first, &*other.begin(), sizeof(T) * count);
 	}
 
 	// destructor //
@@ -150,13 +152,14 @@ namespace ft
 	template<class T, class Allocator>
 	vector<T, Allocator> &vector<T, Allocator>::operator=(const vector &other)
 	{
-		if (&other == this)
+		if (other == *this)
 			return (*this);
 		this->clear();
-		if (_first == nullptr)
-			this->assign(other.begin(), other.end());
-		else
-			this->insert(this->end(), other.begin(), other.end());
+		_alloc = other._alloc;
+		_first = nullptr;
+		_last =nullptr;
+		_count = nullptr;
+		this->insert(this->end(), other.begin(), other.end());
 		return (*this);
 	}
 
@@ -194,7 +197,7 @@ namespace ft
 	{
 		this->clear();
 		difference_type count = ft::distance(first, last);
-		if (this->size() > count)
+		if (this->size() > (long unsigned)count)
 		{
 			_last = _first;
 			for (long i = 0; i < count; i++)
@@ -218,9 +221,19 @@ namespace ft
 
 	// element access //
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::reference vector<T, Allocator>::at(size_type pos) { this->sizeError(pos); return (*(_first + pos)); }
+	typename vector<T, Allocator>::reference vector<T, Allocator>::at(size_type pos) 
+	{
+		if (pos >= this->size())
+			throw (std::out_of_range("vector::sizeError"));
+		return (*(_first + pos));
+	}
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::const_reference vector<T, Allocator>::at(size_type pos) const { this->sizeError(pos); return (*(_first + pos)); }
+	typename vector<T, Allocator>::const_reference vector<T, Allocator>::at(size_type pos) const
+	{
+		if (pos >= this->size())
+			throw (std::out_of_range("vector::sizeError"));
+		return (*(_first + pos));
+	}
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::reference vector<T, Allocator>::operator[](size_type pos) { return (*(_first + pos)); }
 	template<class T, class Allocator>
@@ -230,9 +243,9 @@ namespace ft
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::const_reference vector<T, Allocator>::front() const { return (*_first); }
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::reference vector<T, Allocator>::back() { return (*_last); }
+	typename vector<T, Allocator>::reference vector<T, Allocator>::back() { return (*(_last - 1)); }
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::const_reference vector<T, Allocator>::back() const { return (*_last); }
+	typename vector<T, Allocator>::const_reference vector<T, Allocator>::back() const { return (*(_last - 1)); }
 
 
 	// iterators traits //
@@ -268,13 +281,28 @@ namespace ft
 			throw (std::length_error("vector::reserve"));
 		if (this->capacity() < new_cap)
 		{
-			pointer tem_first = _alloc.allocate(new_cap);
-			pointer tem_last = tem_first + this->size();
-			std::memcpy(tem_first, _first, sizeof(T) * this->size());
-			_alloc.deallocate(_first, this->capacity());
-			_first = tem_first;
-			_last = tem_last;
+			pointer prev_start = _first;
+			pointer prev_end = _last;
+			size_type prev_size = this->size();
+			size_type prev_capacity = this->capacity();
+			
+			_first = _alloc.allocate( new_cap );
 			_count = _first + new_cap;
+			_last = _first;
+			while (prev_start != prev_end)
+			{
+				_alloc.construct(_last, *prev_start);
+				_last++;
+				prev_start++;
+			}
+			_alloc.deallocate(prev_start - prev_size, prev_capacity);
+			// pointer tem_first = _alloc.allocate(new_cap);
+			// pointer tem_last = tem_first + this->size();
+			// std::memcpy(tem_first, _first, sizeof(T) * this->size());
+			// _alloc.deallocate(_first, this->capacity());
+			// _first = tem_first;
+			// _last = tem_last;
+			// _count = _first + new_cap;
 		}
 	}
 	template<class T, class Allocator>
@@ -295,41 +323,126 @@ namespace ft
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::insert(iterator pos, const T &value)
 	{
-		pointer _pos = &*pos;
-		this->rangeError(_pos);
-
-		difference_type diff_pos = ft::distance(_first, _pos);
-		if (_first == nullptr)
+		size_type pos_len = &(*pos) - _first;
+		if (size_type(_count - _last) >= this->size() + 1)
 		{
-			_first = _alloc.allocate(1);
-			_last = _first;
-			_count = _first + 1;
-			*_first = value;
-			pos = _first;
+			for (size_type i = 0; i < pos_len; i++)
+				_alloc.construct(_last - i, *(_last - i - 1));
+			_last++;
+			_alloc.construct(&(*pos), value);
 		}
 		else
 		{
-			size_type tem_capacity = this->capacity();
-			if (this->size() + 1 > this->capacity())
-			{
+			pointer new_start = pointer();
+			pointer new_end = pointer();
+			pointer new_end_capacity = pointer();
 
-				tem_capacity = tem_capacity * 2;
-				if (this->max_size() < tem_capacity)
-					throw (std::length_error("vector::insert"));
-				this->reserve(tem_capacity);
-				_pos = _first + diff_pos;
-			}
-			std::memcpy(_pos + 1, _pos, sizeof(T) * ft::distance(pos, this->end()));
-			*_pos = value;
-			_last++;
+			int next_capacity = (this->size() * 2 > 0) ? this->size() * 2 : 1; 
+			new_start = _alloc.allocate( next_capacity );
+			new_end = new_start + this->size() + 1;
+			new_end_capacity = new_start + next_capacity;
+
+			for (size_type i = 0; i < pos_len; i++)
+				_alloc.construct(new_start + i, *(_first + i));
+			_alloc.construct(new_start + pos_len, value);
+			for (size_type j = 0; j < this->size() - pos_len; j++)
+				_alloc.construct(new_end - j - 1, *(_last - j - 1));
+			for (size_type l = 0; l < this->size(); l++)
+				_alloc.destroy(_first + l);
+			if (_first)
+				_alloc.deallocate(_first, this->capacity());
+			
+			_first = new_start;
+			_last = new_end;
+			_count = new_end_capacity;
 		}
-		return _pos;
+		return (iterator(_first + pos_len));
+		// pointer _pos = &*pos;
+		// this->rangeError(_pos);
+
+		// difference_type diff_pos = ft::distance(_first, _pos);
+		// if (_first == nullptr)
+		// {
+		// 	_first = _alloc.allocate(1);
+		// 	_last = _first;
+		// 	_count = _first + 1;
+		// 	*_first = value;
+		// 	pos = _first;
+		// }
+		// else
+		// {
+		// 	size_type tem_capacity = this->capacity();
+		// 	if (this->size() + 1 > this->capacity())
+		// 	{
+
+		// 		tem_capacity = tem_capacity * 2;
+		// 		if (this->max_size() < tem_capacity)
+		// 			throw (std::length_error("vector::insert"));
+		// 		this->reserve(tem_capacity);
+		// 		_pos = _first + diff_pos;
+		// 	}
+		// 	std::memcpy(_pos + 1, _pos, sizeof(T) * ft::distance(pos, this->end()));
+		// 	*_pos = value;
+		// 	_last++;
+		// }
+		// return _pos;
 	}
 	template<class T, class Allocator>
-	void vector<T, Allocator>::insert(iterator pos, size_type count, const T &value)
+	void vector<T, Allocator>::insert(iterator position, size_type n, const T &val)
 	{
-		for (size_type i = 0; i < count; i++)
-			pos = this->insert(pos, value);
+		if (n == 0)
+			return ;
+		if (n > this->max_size())
+			throw (std::length_error("vector::insert (fill)"));
+		size_type pos_len = &(*position) - _first;
+		if (size_type(_count - _last) >= n)
+		{
+			for (size_type i = 0; i < this->size() - pos_len; i++)
+				_alloc.construct(_last - i + (n - 1), *(_last - i - 1));
+			_last += n;
+			while (n)
+			{
+				_alloc.construct(&(*position) + (n - 1), val);
+				n--;
+			}
+		}
+		else
+		{
+			pointer new_start = pointer();
+			pointer new_end = pointer();
+			pointer new_end_capacity = pointer();
+			
+			int next_capacity = (this->capacity() > 0) ? (int)(this->size() * 2) : 1;
+			new_start = _alloc.allocate(next_capacity);
+			new_end_capacity = new_start + next_capacity;
+
+			if (size_type(new_end_capacity - new_start) < this->size() + n)
+			{
+				if (new_start)
+					_alloc.deallocate(new_start, new_start - new_end_capacity);
+				next_capacity = this->size() + n;
+				new_start = _alloc.allocate(next_capacity);
+				new_end = new_start + this->size() + n;
+				new_end_capacity = new_start + next_capacity;
+			}
+
+			new_end = new_start + this->size() + n;
+
+			for (int i = 0; i < (&(*position) - _first); i++)
+				_alloc.construct(new_start + i, *(_first + i));
+			for (size_type k = 0; k < n; k++)
+				_alloc.construct(new_start + pos_len + k, val);
+			for (size_type j = 0; j < (this->size() - pos_len); j++)
+				_alloc.construct(new_end - j - 1, *(_last - j - 1));
+
+			for (size_type u = 0; u < this->size(); u++)
+				_alloc.destroy(_first + u);
+			_alloc.deallocate(_first, this->capacity());
+
+			_first = new_start;
+			_last = new_end;
+			_count = new_end_capacity;
+		}
 	}
 	template<class T, class Allocator>
 	template< class InputIterator >
@@ -342,22 +455,46 @@ namespace ft
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator pos)
 	{
-		pointer _pos = &*pos;
-		if (_pos != _last)
+		pointer _pos = &(*pos);
+		_alloc.destroy(&(*pos));
+		if (&(*pos) + 1 == _last)
+			_alloc.destroy(&(*pos));
+		else
 		{
-			memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
-			_last--;
+			for (int i = 0; i < _last - &(*pos) - 1; i++)
+			{
+				_alloc.construct(&(*pos) + i, *(&(*pos) + i + 1));
+				_alloc.destroy(&(*pos) + i + 1);
+			}
 		}
-		return (iterator(_pos));		
+		_last -= 1;
+		return (iterator(_pos));
+		// pointer _pos = &*pos;
+		// if (_pos != _last)
+		// {
+		// 	std::memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
+		// 	_last--;
+		// }
+		// return (iterator(_pos));		
 	}
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator first, iterator last)
 	{
-		pointer p_first = &*first;
-		if (p_first != _last)
-			for (iterator i = first; i != last; i++)
-				first = this->erase(first);
-		return (iterator(p_first));
+		pointer p_first = &(*first);
+		for (; &(*first) != &(*last); first++)
+			_alloc.destroy(&(*first));
+		for (int i = 0; i < _last - &(*last); i++)
+		{
+			_alloc.construct(p_first + i, *(&(*last) + i));
+			_alloc.destroy(&(*last) + i);
+		}
+		_last -= (&(*last) - p_first);
+		return (iterator(p_first));		
+		// pointer p_first = &*first;
+		// if (p_first != _last)
+		// 	for (iterator i = first; i != last; i++)
+		// 		first = this->erase(first);
+		// return (iterator(p_first));
 	}
 	template<class T, class Allocator>
 	void vector<T, Allocator>::push_back(const T &value)
@@ -390,7 +527,7 @@ namespace ft
 			}
 		}
 		else
-			this->insert(this->end(), count - this->size(), value);
+			this->insert(this->end(), count - this->size(), value);			
 	}
 	template<class T, class Allocator>
 	void vector<T, Allocator>::swap(vector &other)
@@ -435,74 +572,23 @@ namespace ft
 	template< class T, class Allocator >
 	bool operator<(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
-		if (lhs.size() < rhs.size())
-			return (true);
-		else if (lhs.size() > rhs.size())
-			return (false);
-		for (std::size_t i = 0; i < lhs.size(); i++)
-		{
-			if (lhs[i] < rhs[i])
-				return (true);
-			else if (lhs[i] > rhs[i])
-				return (false);
-		}
-		return (false);		
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));	
 	}
 	template< class T, class Allocator >
 	bool operator<=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
-		if (lhs.size() < rhs.size())
-			return (true);
-		else if (lhs.size() > rhs.size())
-			return (false);
-		for (std::size_t i = 0; i < lhs.size(); i++)
-		{
-			if (lhs[i] < rhs[i])
-				return (true);
-			else if (lhs[i] > rhs[i])
-				return (false);
-		}
-		return (true);				
+		return (!(rhs < lhs));				
 	}
 	template< class T, class Allocator >
 	bool operator>(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
-		if (lhs.size() > rhs.size())
-			return (true);
-		else if (lhs.size() < rhs.size())
-			return (false);
-		for (std::size_t i = 0; i < lhs.size(); i++)
-		{
-			if (lhs[i] > rhs[i])
-				return (true);
-			else if (lhs[i] < rhs[i])
-				return (false);
-		}
-		return (false);	
+		return (rhs < lhs);	
 	}
 	template< class T, class Allocator >
 	bool operator>=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
-		if (lhs.size() > rhs.size())
-			return (true);
-		else if (lhs.size() < rhs.size())
-			return (false);
-		for (std::size_t i = 0; i < lhs.size(); i++)
-		{
-			if (lhs[i] > rhs[i])
-				return (true);
-			else if (lhs[i] < rhs[i])
-				return (false);
-		}
-		return (true);	
+		return (!(lhs < rhs));	
 	}
-
-	// swap //
-	// template< class T, class Allocator >
-	// void swap(vector<T, Allocator>& lhs, vector<T, Allocator>& rhs)
-	// {
-	// 	lhs.swap(rhs);
-	// };
 }
 
 #endif

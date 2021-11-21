@@ -36,6 +36,7 @@ int		main(void)
 	printSize(vct);
 	printSize(vct_range);
 	printSize(vct_copy);
+
 	return (0);
 }
 

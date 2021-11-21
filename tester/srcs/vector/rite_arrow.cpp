@@ -7,7 +7,8 @@ int		main(void)
 	const int size = 5;
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(vct.rbegin());
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite(vct.rend());
+	//const_reverse_iterator
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator ite(vct.rend());
 
 	for (int i = 1; it != ite; ++i)
 		*it++ = (i * 7);

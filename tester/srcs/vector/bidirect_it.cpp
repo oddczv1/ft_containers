@@ -11,6 +11,7 @@ int		main(void)
 		lst.push_back(i * 3);
 
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
+    TESTED_NAMESPACE::vector<TESTED_TYPE> vct1(lst.begin(), lst.end());
 	printSize(vct);
 
 	lst_it = lst.begin();
@@ -19,7 +20,7 @@ int		main(void)
 	vct.assign(lst.begin(), lst.end());
 	printSize(vct);
 
-	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	vct.insert(vct.end(), vct1.rbegin(), vct1.rend());
 	printSize(vct);
 	return (0);
 }
