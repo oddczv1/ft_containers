@@ -20,10 +20,10 @@ int		main(void)
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_0(vct.rbegin());
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_1(vct.rend());
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_mid;
-	//const_reverse_iterator
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator cit_0 = vct.rbegin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator cit_1;
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator cit_mid;
+
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_0 = vct.rbegin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_1;
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_mid;
 
 	for (int i = size; it_0 != it_1; --i)
 		*it_0++ = i;

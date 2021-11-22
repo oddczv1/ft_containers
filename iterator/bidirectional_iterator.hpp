@@ -119,24 +119,40 @@ namespace ft
     };
 
     template <typename T, typename Compare, typename node>
-    bool operator==(ft::bidirectional_iterator<const T, Compare, node>& lsh, 
-        ft::bidirectional_iterator<T, Compare, node>& rsh)   
-    { return (lsh.getNode() == rsh.getNode()); }
+    bool operator==(ft::bidirectional_iterator<const T, Compare, node>& lhs, 
+        ft::bidirectional_iterator<T, Compare, node>& rhs)   
+    {
+        if (lhs.getNode() == nullptr && rhs.getNode() == nullptr)
+            return 0; 
+        return (lhs.getNode() == rhs.getNode());
+    }
 
     template <typename T, typename Compare, typename node>
-    bool operator==(ft::bidirectional_iterator<T, Compare, node>& lsh, 
-        ft::bidirectional_iterator<const T, Compare, node>& rsh)   
-    { return (lsh.getNode() == rsh.getNode()); }
+    bool operator==(ft::bidirectional_iterator<T, Compare, node>& lhs, 
+        ft::bidirectional_iterator<const T, Compare, node>& rhs)   
+    {
+        if (lhs.getNode() == nullptr && rhs.getNode() == nullptr)
+            return 0; 
+        return (lhs.getNode() == rhs.getNode());
+    }
 
     template <typename T, typename Compare, typename node>
-    bool operator!=(ft::bidirectional_iterator<const T, Compare, node>& lsh, 
-        ft::bidirectional_iterator<T, Compare, node>& rsh)   
-    { return (lsh.getNode() != rsh.getNode()); }
+    bool operator!=(ft::bidirectional_iterator<const T, Compare, node>& lhs, 
+        ft::bidirectional_iterator<T, Compare, node>& rhs)   
+    { 
+        if (lhs.getNode() == nullptr && rhs.getNode() == nullptr)
+            return 1; 
+        return (lhs.getNode() != rhs.getNode());
+    }
 
     template <typename T, typename Compare, typename node>
-    bool operator!=(ft::bidirectional_iterator<T, Compare, node>& lsh, 
-        ft::bidirectional_iterator<const T, Compare, node>& rsh)   
-    { return (lsh.getNode() != rsh.getNode()); }
+    bool operator!=(ft::bidirectional_iterator<T, Compare, node>& lhs, 
+        ft::bidirectional_iterator<const T, Compare, node>& rhs)   
+    {
+        if (lhs.getNode() == nullptr && rhs.getNode() == nullptr)
+            return 1; 
+        return (lhs.getNode() != rhs.getNode()); 
+    }
 
     
 }

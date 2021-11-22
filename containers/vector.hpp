@@ -96,6 +96,7 @@ namespace ft
 				if (pos < _first || pos >_last)
 					throw (std::out_of_range("vector::rangeError"));
 			}
+
 	};
 
 	// constructors //
@@ -276,15 +277,14 @@ namespace ft
 	template<class T, class Allocator>
 	void vector<T, Allocator>::reserve(size_type new_cap)
 	{
-		if (this->max_size() < new_cap)
+		if (new_cap > this->max_size())
 			throw (std::length_error("vector::reserve"));
-		if (this->capacity() < new_cap)
+		else if (new_cap > this->capacity())
 		{
 			pointer prev_start = _first;
 			pointer prev_end = _last;
 			size_type prev_size = this->size();
-			size_type prev_capacity = this->capacity();
-			
+			size_type prev_capacity = this->capacity();		
 			_first = _alloc.allocate( new_cap );
 			_count = _first + new_cap;
 			_last = _first;
