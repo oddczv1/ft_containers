@@ -130,14 +130,13 @@ namespace ft
 
 
 	template<typename T, typename Allocator>
-	vector<T, Allocator>::vector(const vector &other): _alloc(other._alloc), _first(nullptr), _last(nullptr), _count(nullptr)
+	vector<T, Allocator>::vector(const vector &other)
 	{
-		this->insert(this->begin(), other.begin(), other.end());
-		// size_type count = other.size();
-		// _first = _alloc.allocate(count);
-		// _last = _first + count;
-		// _count = _first + other.capacity();
-		// std::memcpy(_first, &*other.begin(), sizeof(T) * count);
+		size_type count = other.size();
+		_first = _alloc.allocate(count);
+		_last = _first + count;
+		_count = _first + other.capacity();
+		std::memcpy(_first, &*other.begin(), sizeof(T) * count);
 	}
 
 	// destructor //
@@ -296,13 +295,6 @@ namespace ft
 				prev_start++;
 			}
 			_alloc.deallocate(prev_start - prev_size, prev_capacity);
-			// pointer tem_first = _alloc.allocate(new_cap);
-			// pointer tem_last = tem_first + this->size();
-			// std::memcpy(tem_first, _first, sizeof(T) * this->size());
-			// _alloc.deallocate(_first, this->capacity());
-			// _first = tem_first;
-			// _last = tem_last;
-			// _count = _first + new_cap;
 		}
 	}
 	template<class T, class Allocator>
