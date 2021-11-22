@@ -53,11 +53,37 @@ void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true
 
 int main()
 {
-	const int size = 5;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(vct.rbegin());
-	//const_reverse_iterator
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator ite(vct.rend());
+TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 3;
+	printSize(vct);
+
+	vct2.insert(vct2.end(), 42);
+	vct2.insert(vct2.begin(), 2, 21);
+	printSize(vct2);
+
+	vct2.insert(vct2.end() - 2, 42);
+	// printSize(vct2);
+
+	// vct2.insert(vct2.end(), 2, 84);
+	// printSize(vct2);
+
+	// vct2.resize(4);
+	// printSize(vct2);
+
+	// vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	// vct.clear();
+	// printSize(vct2);
+
+	// printSize(vct);
+
+	// const int size = 5;
+	// TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+	// TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(vct.rbegin());
+	// //const_reverse_iterator
+	// TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator ite(vct.rend());
 
 	// for (int i = 1; it != ite; ++i)
 	// 	*it++ = (i * 7);

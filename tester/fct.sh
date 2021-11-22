@@ -14,8 +14,8 @@ tested_path="../containers/"
 incl_path="$tested_path"
 srcs="srcs"
 
-CC="g++"
-CFLAGS="-Wall -Wextra -Werror -std=c++17"
+CC="clang++"
+CFLAGS="-Wall -Wextra -Werror -std=c++98"
 
 if false; then
 	CFLAGS+=" -fsanitize=address -g3"

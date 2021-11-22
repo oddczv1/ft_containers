@@ -455,46 +455,22 @@ namespace ft
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator pos)
 	{
-		pointer _pos = &(*pos);
-		_alloc.destroy(&(*pos));
-		if (&(*pos) + 1 == _last)
-			_alloc.destroy(&(*pos));
-		else
+		pointer _pos = &*pos;
+		if (_pos != _last)
 		{
-			for (int i = 0; i < _last - &(*pos) - 1; i++)
-			{
-				_alloc.construct(&(*pos) + i, *(&(*pos) + i + 1));
-				_alloc.destroy(&(*pos) + i + 1);
-			}
+			std::memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
+			_last--;
 		}
-		_last -= 1;
-		return (iterator(_pos));
-		// pointer _pos = &*pos;
-		// if (_pos != _last)
-		// {
-		// 	std::memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
-		// 	_last--;
-		// }
-		// return (iterator(_pos));		
+		return (iterator(_pos));		
 	}
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator first, iterator last)
 	{
-		pointer p_first = &(*first);
-		for (; &(*first) != &(*last); first++)
-			_alloc.destroy(&(*first));
-		for (int i = 0; i < _last - &(*last); i++)
-		{
-			_alloc.construct(p_first + i, *(&(*last) + i));
-			_alloc.destroy(&(*last) + i);
-		}
-		_last -= (&(*last) - p_first);
-		return (iterator(p_first));		
-		// pointer p_first = &*first;
-		// if (p_first != _last)
-		// 	for (iterator i = first; i != last; i++)
-		// 		first = this->erase(first);
-		// return (iterator(p_first));
+		pointer p_first = &*first;
+		if (p_first != _last)
+			for (iterator i = first; i != last; i++)
+				first = this->erase(first);
+		return (iterator(p_first));
 	}
 	template<class T, class Allocator>
 	void vector<T, Allocator>::push_back(const T &value)
