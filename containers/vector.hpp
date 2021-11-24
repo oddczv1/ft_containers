@@ -157,7 +157,7 @@ namespace ft
 		this->clear();
 		_alloc = other._alloc;
 		_first = nullptr;
-		_last =nullptr;
+		_last = nullptr;
 		_count = nullptr;
 		this->insert(this->end(), other.begin(), other.end());
 		return (*this);
@@ -312,9 +312,11 @@ namespace ft
 			_alloc.destroy(_last);
 		}
 	}
+
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::insert(iterator pos, const T &value)
 	{
+		this->rangeError(&(*pos));
 		size_type pos_len = &(*pos) - _first;
 		if (size_type(_count - _last) >= this->size() + 1)
 		{
@@ -349,53 +351,26 @@ namespace ft
 			_count = new_end_capacity;
 		}
 		return (iterator(_first + pos_len));
-		// pointer _pos = &*pos;
-		// this->rangeError(_pos);
-
-		// difference_type diff_pos = ft::distance(_first, _pos);
-		// if (_first == nullptr)
-		// {
-		// 	_first = _alloc.allocate(1);
-		// 	_last = _first;
-		// 	_count = _first + 1;
-		// 	*_first = value;
-		// 	pos = _first;
-		// }
-		// else
-		// {
-		// 	size_type tem_capacity = this->capacity();
-		// 	if (this->size() + 1 > this->capacity())
-		// 	{
-
-		// 		tem_capacity = tem_capacity * 2;
-		// 		if (this->max_size() < tem_capacity)
-		// 			throw (std::length_error("vector::insert"));
-		// 		this->reserve(tem_capacity);
-		// 		_pos = _first + diff_pos;
-		// 	}
-		// 	std::memcpy(_pos + 1, _pos, sizeof(T) * ft::distance(pos, this->end()));
-		// 	*_pos = value;
-		// 	_last++;
-		// }
-		// return _pos;
 	}
+
 	template<class T, class Allocator>
-	void vector<T, Allocator>::insert(iterator position, size_type n, const T &val)
+	void vector<T, Allocator>::insert(iterator pos, size_type count, const T &value)
 	{
-		if (n == 0)
+		if (count == 0)
 			return ;
-		if (n > this->max_size())
+		if (count > this->max_size())
 			throw (std::length_error("vector::insert (fill)"));
-		size_type pos_len = &(*position) - _first;
-		if (size_type(_count - _last) >= n)
+		this->rangeError(&(*pos));
+		size_type pos_len = &(*pos) - _first;
+		if (size_type(_count - _last) >= count)
 		{
 			for (size_type i = 0; i < this->size() - pos_len; i++)
-				_alloc.construct(_last - i + (n - 1), *(_last - i - 1));
-			_last += n;
-			while (n)
+				_alloc.construct(_last - i + (count - 1), *(_last - i - 1));
+			_last += count;
+			while (count)
 			{
-				_alloc.construct(&(*position) + (n - 1), val);
-				n--;
+				_alloc.construct(&(*pos) + (count - 1), value);
+				count--;
 			}
 		}
 		else
@@ -408,22 +383,22 @@ namespace ft
 			new_start = _alloc.allocate(next_capacity);
 			new_end_capacity = new_start + next_capacity;
 
-			if (size_type(new_end_capacity - new_start) < this->size() + n)
+			if (size_type(new_end_capacity - new_start) < this->size() + count)
 			{
 				if (new_start)
 					_alloc.deallocate(new_start, new_start - new_end_capacity);
-				next_capacity = this->size() + n;
+				next_capacity = this->size() + count;
 				new_start = _alloc.allocate(next_capacity);
-				new_end = new_start + this->size() + n;
+				new_end = new_start + this->size() + count;
 				new_end_capacity = new_start + next_capacity;
 			}
 
-			new_end = new_start + this->size() + n;
+			new_end = new_start + this->size() + count;
 
-			for (int i = 0; i < (&(*position) - _first); i++)
+			for (int i = 0; i < (&(*pos) - _first); i++)
 				_alloc.construct(new_start + i, *(_first + i));
-			for (size_type k = 0; k < n; k++)
-				_alloc.construct(new_start + pos_len + k, val);
+			for (size_type k = 0; k < count; k++)
+				_alloc.construct(new_start + pos_len + k, value);
 			for (size_type j = 0; j < (this->size() - pos_len); j++)
 				_alloc.construct(new_end - j - 1, *(_last - j - 1));
 
@@ -436,14 +411,16 @@ namespace ft
 			_count = new_end_capacity;
 		}
 	}
+
 	template<class T, class Allocator>
 	template< class InputIterator >
 	void vector<T, Allocator>::insert(iterator pos, InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*)
 	{
 		for (InputIterator i = --last; i >=first; i--)
-			pos = this->insert(pos, *i);
+			pos = this->insert(pos, *i);		
 	}
+
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator pos)
 	{
@@ -455,6 +432,7 @@ namespace ft
 		}
 		return (iterator(_pos));		
 	}
+
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator first, iterator last)
 	{
@@ -464,6 +442,7 @@ namespace ft
 				first = this->erase(first);
 		return (iterator(p_first));
 	}
+
 	template<class T, class Allocator>
 	void vector<T, Allocator>::push_back(const T &value)
 	{
@@ -475,12 +454,14 @@ namespace ft
 		_alloc.construct(_last, value);
 		_last++;
 	}
+
 	template<class T, class Allocator>
 	void vector<T, Allocator>::pop_back()
 	{
 		_alloc.destroy(&this->back());
 		_last--;
 	}
+
 	template<class T, class Allocator>
 	void vector<T, Allocator>::resize(size_type count, T value)
 	{
@@ -497,6 +478,7 @@ namespace ft
 		else
 			this->insert(this->end(), count - this->size(), value);			
 	}
+
 	template<class T, class Allocator>
 	void vector<T, Allocator>::swap(vector &other)
 	{
@@ -527,6 +509,7 @@ namespace ft
 				return (false);
 		return (true);		
 	}
+
 	template< class T, class Allocator >
 	bool operator!=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
@@ -537,21 +520,25 @@ namespace ft
 				return (true);
 		return (false);		
 	}
+
 	template< class T, class Allocator >
 	bool operator<(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));	
 	}
+
 	template< class T, class Allocator >
 	bool operator<=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
 		return (!(rhs < lhs));				
 	}
+
 	template< class T, class Allocator >
 	bool operator>(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
 		return (rhs < lhs);	
 	}
+
 	template< class T, class Allocator >
 	bool operator>=(const vector<T, Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{

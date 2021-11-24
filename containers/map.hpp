@@ -55,7 +55,8 @@ namespace ft
 			map(const map& other);
 			~map();
 			map &operator=( const map &other );
-		
+			allocator_type get_allocator() const 	{return _allocPair;}
+
 			// // Element access //
 			T& at(const Key& key);
 			const T& at(const Key& key) const;

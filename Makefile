@@ -28,3 +28,6 @@ fclean : clean
 re : fclean all
 
 .PHONY: all clean fclean re
+
+#  make re; ./test  | > zz_std
+# make re; ./test  | > zz_ft ; diff --suppress-common-lines zz_ft zz_std | > zzz_res

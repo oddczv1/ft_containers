@@ -1,53 +1,42 @@
 #include "./containers/vector.hpp"
 #include "./containers/stack.hpp"
 #include "./containers/map.hpp"
-#include "./iterator/util.hpp"
+#include "./v_c.hpp"
 #include <vector>
 #include <stack>
 #include <map>
 #include <list>
 
+#define TESTED_TYPE int
+
 int main()
 {
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
 
-
-
-	// typedef t_stack_::container_type container_type;
-
-	// container_type	ctnr;
-
-	// ctnr.push_back(21);
-	// ctnr.push_back(42);
-	// ctnr.push_back(1337);
-	// ctnr.push_back(19);
-	// ctnr.push_back(0);
-	// ctnr.push_back(183792);
 	
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 3;
+	printSize(vct);
 
-	// t_stack_		stck(ctnr);
+	vct2.insert(vct2.end(), 42);
+	printSize(vct2);
+	vct2.insert(vct2.begin(), 2, 21);
+	printSize(vct2);
 
-	// std::cout << "empty: " << stck.empty() << std::endl;
-	// std::cout << "size: " << stck.size() << std::endl;
+	vct2.insert(vct2.end() - 2, 42);
+	printSize(vct2);
 
-	// stck.push(1);
-	// stck.push(2);
-	// stck.push(3);
-	// // stck.push(4);
-	// // stck.push(5);
-	// // stck.push(6);
-	// std::cout << "Added some elements" << std::endl;
+	vct2.insert(vct2.end(), 2, 84);
+	printSize(vct2);
 
-	// std::cout << "empty: " << stck.empty() << std::endl;
-	// printSize(stck);
+	vct2.resize(4);
+	printSize(vct2);
 
-	// return (0);
+	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	vct.clear();
+	printSize(vct2);
 
-
-
-
-
-
-
-
-
+	printSize(vct);
+	return (0);
 }
