@@ -152,14 +152,21 @@ namespace ft
 	template<class T, class Allocator>
 	vector<T, Allocator> &vector<T, Allocator>::operator=(const vector &other)
 	{
-		if (other == *this)
-			return (*this);
+		// if (other == *this)
+		// 	return (*this);
 		this->clear();
+		_alloc.deallocate(_first, this->capacity());
+		size_type count = other.size();
 		_alloc = other._alloc;
-		_first = nullptr;
-		_last = nullptr;
-		_count = nullptr;
-		this->insert(this->end(), other.begin(), other.end());
+		_first = _alloc.allocate(count);
+		_last = _first + count;
+		_count = _first + other.capacity();
+		
+		std::cout << &*_first	<< " ----- " << &*other.begin() << std::endl;
+		//*_first = *other.begin();
+		std::memcpy(_first, &*other.begin(), sizeof(T) * count);
+		std::cout << &*_first	<< " ----- " << &*other.begin() << std::endl;
+
 		return (*this);
 	}
 
@@ -250,7 +257,7 @@ namespace ft
 
 	// iterators traits //
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::iterator vector<T, Allocator>::begin() { return (iterator(_first)); }
+	typename vector<T, Allocator>::iterator vector<T, Allocator>::begin() { return ((_first)); }
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::const_iterator vector<T, Allocator>::begin() const { return (const_iterator(_first)); }
 	template<class T, class Allocator>
