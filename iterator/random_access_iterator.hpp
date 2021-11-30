@@ -112,9 +112,10 @@ namespace ft
     typename ft::random_access_iterator<T>::difference_type
 		operator-(const ft::random_access_iterator<T> lhs, const ft::random_access_iterator<T> rhs)
     { return (lhs.base() - rhs.base()); }
+
     template<typename T_L, typename T_R>
     typename ft::random_access_iterator<T_L>::difference_type
-    	operator-(const ft::random_access_iterator<T_L> lhs,const ft::random_access_iterator<T_R> rhs)
+    	operator-(const ft::random_access_iterator<T_L> lhs, const ft::random_access_iterator<T_R> rhs)
     { return (lhs.base() - rhs.base()); }
 }
 
