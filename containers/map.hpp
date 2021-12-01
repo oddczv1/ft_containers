@@ -27,10 +27,11 @@ namespace ft
 			typedef typename std::ptrdiff_t 												difference_type;
 			typedef Compare 																key_compare;
 			typedef Allocator 																allocator_type;
+			typedef typename Allocator::template rebind<node>::other 						allocNode;
 			typedef value_type& 															reference;
 			typedef const value_type& 														const_reference;
-			typedef typename Allocator::pointer 											pointer;
-			typedef typename Allocator::const_pointer 										const_pointer;
+			typedef typename allocator_type::pointer 										pointer;
+			typedef typename allocator_type::const_pointer 									const_pointer;
 			typedef ft::bidirectional_iterator<value_type, Compare, node>					iterator;
 			typedef ft::bidirectional_iterator<const value_type, Compare, node>				const_iterator;
 			typedef ft::reverse_iterator<iterator>											reverse_iterator;
@@ -51,7 +52,7 @@ namespace ft
 			// Member functions //
 			map(const Compare &comp = key_compare(), const Allocator &alloc = allocator_type());
 			template< class InputIt >
-			map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = nullptr);
+			map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = nullptr);
 			map(const map& other);
 			~map();
 			map &operator=( const map &other );
@@ -107,7 +108,7 @@ namespace ft
             size_type               _size;
             allocator_type          _allocPair;
             key_compare             _comp;
-            std::allocator<node>     _allocNode;
+            allocNode    			_allocNode;
 
             void insertNode(node* node, const value_type& value)
             {

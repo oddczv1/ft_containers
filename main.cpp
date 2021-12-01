@@ -12,54 +12,48 @@
 #include <cstring>
 
 
-#define TESTED_TYPE std::string
+#define TESTED_TYPE int
 
-
-
-int main()
+int		main(void)
 {
-	// TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
-	// TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
-	
-	// for (unsigned long int i = 0; i < vct.size(); ++i)
-	// 	vct[i] = (vct.size() - i) * 3;
-	// printSize(vct);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(5);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin(), ite = vct.end();
 
-	// vct2.insert(vct2.end(), 42);
-	// printSize(vct2);
-	// vct2.insert(vct2.begin(), 2, 21);
-	// printSize(vct2);
+	std::cout << "len: " << (ite - it) << std::endl;
+	for (; it != ite; ++it)
+		*it = (ite - it);
 
-	// vct2.insert(vct2.end() - 2, 42);
-	// printSize(vct2);
+	it = vct.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_range(it, --(--ite));
+	for (int i = 0; it != ite; ++it)
+		*it = ++i * 5;
 
-	// vct2.insert(vct2.end(), 2, 84);
-	// printSize(vct2);
+	it = vct.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_copy(vct);
+	for (int i = 0; it != ite; ++it)
+		*it = ++i * 7;
+	vct_copy.push_back(42);
+	vct_copy.push_back(21);
 
-	// vct2.resize(4);
-	// printSize(vct2);
+	std::cout << "\t-- PART ONE --" << std::endl;
+	printSize(vct);
+	printSize(vct_range);
+	printSize(vct_copy);
 
-	// vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
-	// vct.clear();
-	// printSize(vct2);
+	vct = vct_copy;
+	vct_copy = vct_range;
+	vct_range.clear();
 
-	// printSize(vct);
+	std::cout << "\t-- PART TWO --" << std::endl;
+	printSize(vct);
+	printSize(vct_range);
+	printSize(vct_copy);
 
-	TESTED_NAMESPACE::vector<TESTED_TYPE> v1;
-
-	v1.push_back("aaaa");
-
-	TESTED_NAMESPACE::vector<TESTED_TYPE> v2;
-	v2 = v1;
-
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator iter1 = v1.begin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator iter2 = v2.begin();
-	*iter1 = "bbbb";
-	std::cout << iter2->c_str() << " && " << iter1->c_str() << std::endl;
-	std::cout << &*iter2 << " && " << &*iter1 << std::endl;
 	return (0);
-
 }
+
+
+
 
 // vector speed //
 // #include <iostream>

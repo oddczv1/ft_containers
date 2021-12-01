@@ -46,7 +46,7 @@ namespace ft
             friend bool operator>(const stack& lhs, const stack& rhs)   { return (lhs._cont > rhs._cont); }
             friend bool operator>=(const stack& lhs, const stack& rhs)  { return (lhs._cont >= rhs._cont); }
 
-		private:
+		protected:
 			container_type _cont;
 	};
 }

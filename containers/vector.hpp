@@ -135,9 +135,11 @@ namespace ft
 	{
 		size_type count = other.size();
 		_first = _alloc.allocate(count);
-		_last = _first + count;
-		_count = _first + other.capacity();
-		std::memcpy(_first, &*other.begin(), sizeof(T) * count);
+		_last = _first;
+		_count = _first + count;
+		const_iterator first = other.begin();
+		for (size_type i = 0; i < count; i++)
+			_alloc.construct(_last++, *first++);
 	}
 
 	// destructor //
@@ -157,19 +159,14 @@ namespace ft
 		this->clear();
 		_alloc.deallocate(_first, this->capacity());
 		size_type count = other.size();
-		_alloc = other._alloc;
 		_first = _alloc.allocate(count);
-		_last = _first + count;
-		_count = _first + other.capacity();
-		
-		std::cout << &*_first	<< " ----- " << &*other.begin() << std::endl;
-		//*_first = *other.begin();
-		std::memcpy(_first, &*other.begin(), sizeof(T) * count);
-		std::cout << &*_first	<< " ----- " << &*other.begin() << std::endl;
-
+		_last = _first;
+		_count = _first + count;
+		const_iterator first = other.begin();
+		for (size_type i = 0; i < count; i++)
+			_alloc.construct(_last++, *first++);
 		return (*this);
 	}
-
 
 	// assign //
 	template<class T, class Allocator>
@@ -257,7 +254,7 @@ namespace ft
 
 	// iterators traits //
 	template<class T, class Allocator>
-	typename vector<T, Allocator>::iterator vector<T, Allocator>::begin() { return ((_first)); }
+	typename vector<T, Allocator>::iterator vector<T, Allocator>::begin() { return (iterator(_first)); }
 	template<class T, class Allocator>
 	typename vector<T, Allocator>::const_iterator vector<T, Allocator>::begin() const { return (const_iterator(_first)); }
 	template<class T, class Allocator>
@@ -434,6 +431,7 @@ namespace ft
 		pointer _pos = &*pos;
 		if (_pos != _last)
 		{
+			_alloc.destroy(_pos);
 			std::memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
 			_last--;
 		}

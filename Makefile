@@ -6,7 +6,8 @@ SRCS		= ./main.cpp
 
 RM			= rm -rf
 CC			= g++
-CFLAGS		= -Wall -Wextra -Werror -std=c++11
+# CFLAGS		= -std=c++98
+CFLAGS		= -Wall -Wextra -Werror -std=c++98
 
 # %.o: %.cpp
 # 	$(CC) $(CFLAGS) -c $< -o $@
