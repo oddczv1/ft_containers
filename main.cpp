@@ -18,10 +18,8 @@
 
 int main()
 {
-
 	// TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
 	// TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
-
 	
 	// for (unsigned long int i = 0; i < vct.size(); ++i)
 	// 	vct[i] = (vct.size() - i) * 3;
@@ -60,7 +58,6 @@ int main()
 	std::cout << iter2->c_str() << " && " << iter1->c_str() << std::endl;
 	std::cout << &*iter2 << " && " << &*iter1 << std::endl;
 	return (0);
-
 
 }
 
