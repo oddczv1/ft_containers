@@ -182,9 +182,7 @@ namespace ft
 				_tem->parent = node->parent;
                 node->left = _tem->right;
 				if (_tem->right)
-				{
 					_tem->right->parent = node;
-				}
                 _tem->right = node; // 오른쪽에 기존 노드
 				node->parent = _tem;
                 node->height = max(height(node->left), height(node->right)) + 1;

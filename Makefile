@@ -5,8 +5,7 @@ SRCS		= ./main.cpp
 # OBJS		= $(SRCS:.cpp=.o)
 
 RM			= rm -rf
-CC			= g++
-# CFLAGS		= -std=c++98
+CC			= clang++
 CFLAGS		= -Wall -Wextra -Werror -std=c++98
 
 # %.o: %.cpp

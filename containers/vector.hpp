@@ -14,8 +14,8 @@ namespace ft
 			typedef Allocator 										allocator_type;
 			typedef std::size_t										size_type;
 			typedef std::ptrdiff_t 									difference_type;
-			typedef typename Allocator::reference					reference;
-			typedef typename Allocator::const_reference				const_reference;
+			typedef value_type&										reference;
+			typedef const value_type&								const_reference;
 			typedef typename Allocator::pointer 					pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
 			typedef ft::random_access_iterator<value_type>			iterator;
@@ -125,7 +125,7 @@ namespace ft
 		_first = _alloc.allocate(count);
 		_last = _first;
 		_count = _first + count;
-		for (long i = 0; i < count; i++)
+		for (size_t i = 0; i < (size_t)count; i++)
 			_alloc.construct(_last++, *first++);
 	}
 
@@ -134,6 +134,7 @@ namespace ft
 	vector<T, Allocator>::vector(const vector &other)
 	{
 		size_type count = other.size();
+		_alloc = other._alloc;
 		_first = _alloc.allocate(count);
 		_last = _first;
 		_count = _first + count;
@@ -154,10 +155,11 @@ namespace ft
 	template<class T, class Allocator>
 	vector<T, Allocator> &vector<T, Allocator>::operator=(const vector &other)
 	{
-		// if (other == *this)
-		// 	return (*this);
+		if (other == *this)
+			return (*this);
 		this->clear();
 		_alloc.deallocate(_first, this->capacity());
+		_alloc = other._alloc;
 		size_type count = other.size();
 		_first = _alloc.allocate(count);
 		_last = _first;
@@ -177,7 +179,8 @@ namespace ft
 			return ;
 		if (this->max_size() < count)
 			throw (std::length_error("vector::assign"));
-		if (this->size() > count)
+		
+		if (this->capacity() >= count)
 		{
 			_last = _first;
 			for (size_type i = 0; i < count; i++)
@@ -201,10 +204,10 @@ namespace ft
 	{
 		this->clear();
 		difference_type count = ft::distance(first, last);
-		if (this->size() > (long unsigned)count)
+		if (this->capacity() >= (size_type)count)
 		{
 			_last = _first;
-			for (long i = 0; i < count; i++)
+			for (size_type i = 0; i < (size_type)count; i++)
 				_alloc.construct(_last++, *first++);
 		}
 		else
@@ -215,7 +218,7 @@ namespace ft
 			_count = _first + count;
 			for (long i = 0; i < count; i++)
 				_alloc.construct(_last++, *first++);
-		}	
+		}
 	}
 
 	// allocator_type //
@@ -286,16 +289,15 @@ namespace ft
 		else if (new_cap > this->capacity())
 		{
 			pointer prev_start = _first;
-			pointer prev_end = _last;
 			size_type prev_size = this->size();
 			size_type prev_capacity = this->capacity();		
 			_first = _alloc.allocate( new_cap );
 			_count = _first + new_cap;
 			_last = _first;
-			while (prev_start != prev_end)
+			for (size_type i = 0; i < prev_size; i++)
 			{
-				_alloc.construct(_last, *prev_start);
-				_last++;
+				_alloc.construct(_last++, *prev_start);
+				_alloc.destroy(prev_start);
 				prev_start++;
 			}
 			_alloc.deallocate(prev_start - prev_size, prev_capacity);
@@ -335,7 +337,7 @@ namespace ft
 			pointer new_end = pointer();
 			pointer new_end_capacity = pointer();
 
-			int next_capacity = (this->size() * 2 > 0) ? this->size() * 2 : 1; 
+			int next_capacity = this->size() > 0 ? this->size() * 2 : 1; 
 			new_start = _alloc.allocate( next_capacity );
 			new_end = new_start + this->size() + 1;
 			new_end_capacity = new_start + next_capacity;
@@ -383,7 +385,7 @@ namespace ft
 			pointer new_end = pointer();
 			pointer new_end_capacity = pointer();
 			
-			int next_capacity = (this->capacity() > 0) ? (int)(this->size() * 2) : 1;
+			int next_capacity = this->size() > 0 ? this->size() * 2 : 1;
 			new_start = _alloc.allocate(next_capacity);
 			new_end_capacity = new_start + next_capacity;
 
@@ -429,12 +431,11 @@ namespace ft
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator pos)
 	{
 		pointer _pos = &*pos;
-		if (_pos != _last)
-		{
-			_alloc.destroy(_pos);
-			std::memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
-			_last--;
-		}
+		if ( _pos >=_last)
+			throw (std::out_of_range("vector::rangeError"));
+		_alloc.destroy(_pos);
+		std::memcpy(_pos, _pos + 1, sizeof(T) * ft::distance(_pos + 1, _last));
+		_last--;
 		return (iterator(_pos));		
 	}
 
@@ -442,9 +443,10 @@ namespace ft
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase(iterator first, iterator last)
 	{
 		pointer p_first = &*first;
-		if (p_first != _last)
-			for (iterator i = first; i != last; i++)
-				first = this->erase(first);
+		if ( p_first >=_last || &*last > _last)
+			throw (std::out_of_range("vector::rangeError"));
+		for (iterator i = first; i != last; i++)
+			first = this->erase(first);
 		return (iterator(p_first));
 	}
 
@@ -453,7 +455,7 @@ namespace ft
 	{
 		if (_last == _count)
 		{
-			int tem_count = (this->size() > 0) ? (int)(this->size() * 2) : 1;
+			int tem_count = this->size() > 0 ? this->size() * 2 : 1;
 			this->reserve(tem_count);
 		}
 		_alloc.construct(_last, value);

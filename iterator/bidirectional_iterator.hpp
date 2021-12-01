@@ -42,8 +42,6 @@ namespace ft
                 return (*this);
             }
             
-            
-
             node* getNode() const               { return _node; }
             node* getLastNode() const           { return _lastNode; }
             key_compare getCompare() const      { return _comp; }
