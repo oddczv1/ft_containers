@@ -155,7 +155,7 @@ namespace ft
 	template<class T, class Allocator>
 	vector<T, Allocator> &vector<T, Allocator>::operator=(const vector &other)
 	{
-		if (other == *this)
+		if (&other == this)
 			return (*this);
 		this->clear();
 		_alloc.deallocate(_first, this->capacity());

@@ -5,17 +5,17 @@
 
 namespace ft
 {
-	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key,T> > >
+	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 	class map
 	{
 		private:
 		    struct node
             {
                 ft::pair<const Key, T>  value;
-                int height;
-				node* parent;
-                node* left;
-                node* right;
+                int 					height;
+				node* 					parent;
+                node* 					left;
+                node* 					right;
             };
 
 		public:
@@ -99,7 +99,8 @@ namespace ft
             key_compare key_comp() const        { return _comp; }
             value_compare value_comp() const    { return value_compare(_comp); }
 			// tree print //
-			void treePrint() {display(_top, 1); std::cout << "\n\n" << std::endl;}; 
+			void treePrint_int() {display_int(_top, 1); std::cout << "\n\n" << std::endl;};
+			void treePrint_string() {display_string(_top, 1); std::cout << "\n\n" << std::endl;}; 
 
 		private:
             node*                   _top;
@@ -323,21 +324,39 @@ namespace ft
                 _allocNode.deallocate(node, 1);				
 			}
 
-			void display(node* node, int level) {
+			void display_string(node* node, int level) {
 				if (node != NULL) {
 					// 가장 우측 노드부터 방문
-					display(node->right, level + 1);
-					printf("\n");
+					display_string(node->right, level + 1);
+					std::cout << std::endl;
 
 					if (node == _top) {
-						printf("ROOT : ");
+						std::cout << "ROOT : "; 
 					}
 
 					for (int i = 0;i < level && node != _top;i++) {
-						printf("     ");
+						std::cout << "     "; 
 					}
-					printf("%s(%d)", (node->value.first).c_str(), height(node));
-					display(node->left, level + 1);
+					std::cout << (node->value.first).c_str() << "(" <<  height(node) << ")";
+					display_string(node->left, level + 1);
+				}
+			}
+			
+			void display_int(node* node, int level) {
+				if (node != NULL) {
+					// 가장 우측 노드부터 방문
+					display_int(node->right, level + 1);
+					std::cout << std::endl;
+
+					if (node == _top) {
+						std::cout << "ROOT : "; 
+					}
+
+					for (int i = 0;i < level && node != _top;i++) {
+						std::cout << "     "; 
+					}
+					std::cout << node->value.first << "(" <<  height(node) << ")";
+					display_int(node->left, level + 1);
 				}
 			}
 	};
@@ -394,8 +413,7 @@ namespace ft
         node* haveNode = checkNode(_top, key);
         if (haveNode)
             return (haveNode->value.second);
-        else
-            throw (std::out_of_range("map::at:  key not found"));
+        throw (std::out_of_range("map::at:  key not found"));
     }
 
     template < class Key, class T, class Compare, class Allocator>
@@ -404,8 +422,7 @@ namespace ft
         node* haveNode = checkNode(_top, key);
         if (haveNode)
             return (haveNode->value.second);
-        else
-            throw (std::out_of_range("map::at:  key not found"));
+        throw (std::out_of_range("map::at:  key not found"));
     }
 
     template < class Key, class T, class Compare, class Allocator>
@@ -566,11 +583,9 @@ namespace ft
 	typename map<Key, T, Compare, Allocator>::const_iterator map<Key, T, Compare, Allocator>::lower_bound(const Key &key) const
 	{
 		const_iterator it = begin();
-
 		for (; it != end(); ++it)
 			if (!_comp(it->first, key))
 				break;
-
 		return it;
 	}
 
