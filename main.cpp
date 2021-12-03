@@ -10,10 +10,10 @@
 #include <ctime>
 
 // test vector 헤더 //
-#include "./tester/for_test_vector.hpp"
+//#include "./tester/for_test_vector.hpp"
 
 // test map 헤더 //
-//#include "./tester/for_test_map.hpp"
+#include "./tester/for_test_map.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,30 +23,34 @@
 
 // int		main(void)
 // {
-// 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(7);
+//     typedef TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator iter;
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct1(7);
+//     TESTED_NAMESPACE::vector<TESTED_TYPE> vct2(4);
 
-// 	for (unsigned long int i = 0; i < vct.size(); ++i)
-// 	{
-// 		vct.at(i) = (vct.size() - i) * 3;
-// 		std::cout << "vct.at(): " << vct.at(i) << " | ";
-// 		std::cout << "vct[]: " << vct[i] << std::endl;
-// 	}
-// 	printSize(vct);
+// 	for (unsigned long int i = 0; i < vct1.size(); ++i)
+// 		vct1.at(i) = (vct1.size() - i) * 3;
+// 	for (unsigned long int i = 0; i < vct2.size(); ++i)
+// 		vct2.at(i) = (vct2.size() - i) * 5;
 
-// 	TESTED_NAMESPACE::vector<TESTED_TYPE> const vct_c(vct);
+//     std::cout << "[vct1]" << std::endl;
+// 	printSize(vct1);
+//     std::cout << "[vct2]" << std::endl;
+//     printSize(vct2);
+//     iter vct1_begin = vct1.begin();
+//     iter vct2_begin = vct2.begin();
 
-// 	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
-// 	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+//     std::cout << "vct1 begin() : " << *vct1_begin << std::endl;
+//     std::cout << "vct2 begin() : " << *vct2_begin << std::endl;
 
-// 	try {
-// 		vct.at(10) = 42;
-// 	}
-// 	catch (std::out_of_range &e) {
-// 		std::cout << "Catch out_of_range exception!" << std::endl;
-// 	}
-// 	catch (std::exception &e) {
-// 		std::cout << "Catch exception: " << e.what() << std::endl;
-// 	}
+//     vct1.swap(vct2);
+//     std::cout << "\n\n*********after swap*********" << std::endl;
+//     std::cout << "[vct1]" << std::endl;
+// 	printSize(vct1);
+//     std::cout << "[vct2]" << std::endl;
+//     printSize(vct2);
+//     std::cout << "vct2 begin() : " << *vct1_begin << std::endl;
+//     std::cout << "vct1 begin() : " << *vct2_begin << std::endl;
+
 // 	return (0);
 // }
 
@@ -107,24 +111,38 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 //// map base ////
-// #define T1 int
-// #define T2 foo<float>
+#define T1 int
+#define T2 foo<float>
 
-// typedef TESTED_NAMESPACE::map<T1, T2> _map;
-// typedef _map::const_iterator const_it;
+typedef TESTED_NAMESPACE::map<T1, T2> _map;
+typedef _map::iterator iter;
 
-// int		main(void)
-// {
-// 	_map	mp;
+int		main(void)
+{
+	_map	mp;
 
-// 	mp[1] = 2.3;
-// 	mp[3] = 1.4;
-// 	mp[4] = 0.3;
-// 	mp[7] = 4.2;
+	mp[1] = 2.3;
+	mp[3] = 1.4;
+	mp[4] = 0.3;
+	mp[7] = 4.2;
+    mp.insert(ft::make_pair(8, 1.1));
+	//mp.treePrint_int();
 
-// 	mp.treePrint_int();
-// 	return (0);
-// }
+    printSize(mp);
+    std::cout << "[begin]" << std::endl;
+    std::cout << "- key: "<<mp.begin()->first << " | " << "value: "<< mp.begin()->second << std::endl;
+    std::cout << "\n\n\n*********after erase*********" << std::endl;
+    mp.erase(mp.begin());
+    printSize(mp);
+    std::cout << "[begin]" << std::endl;
+    std::cout << "- key: "<<mp.begin()->first << " | " << "value: "<< mp.begin()->second << std::endl;
+    std::cout << "\n\n\n*********after insert*********" << std::endl;
+    mp[2] = 2.2;
+    printSize(mp);
+    std::cout << "[begin]" << std::endl;
+    std::cout << "- key: "<<mp.begin()->first << " | " << "value: "<< mp.begin()->second << std::endl;
+	return (0);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 

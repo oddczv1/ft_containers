@@ -511,10 +511,7 @@ namespace ft
 	{
 		if (lhs.size() != rhs.size())
 			return (false);
-		for (std::size_t i = 0; i < lhs.size(); i++)
-			if (lhs[i] != rhs[i])
-				return (false);
-		return (true);		
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));		
 	}
 
 	template< class T, class Allocator >
@@ -522,10 +519,7 @@ namespace ft
 	{
 		if (lhs.size() != rhs.size())
 			return (true);
-		for (std::size_t i = 0; i < lhs.size(); i++)
-			if (lhs[i] != rhs[i])
-				return (true);
-		return (false);		
+		return (!ft::equal(lhs.begin(), lhs.end(), rhs.begin()));		
 	}
 
 	template< class T, class Allocator >

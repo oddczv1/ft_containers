@@ -3,7 +3,7 @@
 #include <string>
 
 #ifndef TESTED_NAMESPACE
-# define TESTED_NAMESPACE ft
+# define TESTED_NAMESPACE std
 #endif
 
 #define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
