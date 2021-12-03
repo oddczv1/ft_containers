@@ -323,99 +323,30 @@ namespace ft
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::insert(iterator pos, const T &value)
 	{
 		this->rangeError(&(*pos));
-		size_type pos_len = &(*pos) - _first;
+		size_t _len = ft::distance(_first, &(*pos));
 		if (size_type(_count - _last) >= this->size() + 1)
 		{
-			for (size_type i = 0; i < pos_len; i++)
-				_alloc.construct(_last - i, *(_last - i - 1));
+			std::memcpy(&(*pos) + 1, &(*pos), sizeof(T) * ft::distance(pos, this->end()));
 			_last++;
 			_alloc.construct(&(*pos), value);
 		}
 		else
 		{
-			pointer new_start = pointer();
-			pointer new_end = pointer();
-			pointer new_end_capacity = pointer();
-
-			int next_capacity = this->size() > 0 ? this->size() * 2 : 1; 
-			new_start = _alloc.allocate( next_capacity );
-			new_end = new_start + this->size() + 1;
-			new_end_capacity = new_start + next_capacity;
-
-			for (size_type i = 0; i < pos_len; i++)
-				_alloc.construct(new_start + i, *(_first + i));
-			_alloc.construct(new_start + pos_len, value);
-			for (size_type j = 0; j < this->size() - pos_len; j++)
-				_alloc.construct(new_end - j - 1, *(_last - j - 1));
-			for (size_type l = 0; l < this->size(); l++)
-				_alloc.destroy(_first + l);
-			if (_first)
-				_alloc.deallocate(_first, this->capacity());
-			
-			_first = new_start;
-			_last = new_end;
-			_count = new_end_capacity;
+			int tem_capacity = this->size() > 0 ? this->size() * 2 : 1; 
+			this->reserve(tem_capacity);
+			pointer _pos = _first + (int)_len;
+			std::memcpy(&*_pos + 1, &*_pos, sizeof(T) * ft::distance(_pos, _last));
+			_alloc.construct(&*_pos, value);
+			_last++;
 		}
-		return (iterator(_first + pos_len));
+		return (iterator(_first + _len));
 	}
 
 	template<class T, class Allocator>
-	void vector<T, Allocator>::insert(iterator pos, size_type count, const T &value)
+	void vector<T, Allocator>::insert(iterator pos, size_type count, const T &value)	
 	{
-		if (count == 0)
-			return ;
-		if (count > this->max_size())
-			throw (std::length_error("vector::insert (fill)"));
-		this->rangeError(&(*pos));
-		size_type pos_len = &(*pos) - _first;
-		if (size_type(_count - _last) >= count)
-		{
-			for (size_type i = 0; i < this->size() - pos_len; i++)
-				_alloc.construct(_last - i + (count - 1), *(_last - i - 1));
-			_last += count;
-			while (count)
-			{
-				_alloc.construct(&(*pos) + (count - 1), value);
-				count--;
-			}
-		}
-		else
-		{
-			pointer new_start = pointer();
-			pointer new_end = pointer();
-			pointer new_end_capacity = pointer();
-			
-			int next_capacity = this->size() > 0 ? this->size() * 2 : 1;
-			new_start = _alloc.allocate(next_capacity);
-			new_end_capacity = new_start + next_capacity;
-
-			if (size_type(new_end_capacity - new_start) < this->size() + count)
-			{
-				if (new_start)
-					_alloc.deallocate(new_start, new_start - new_end_capacity);
-				next_capacity = this->size() + count;
-				new_start = _alloc.allocate(next_capacity);
-				new_end = new_start + this->size() + count;
-				new_end_capacity = new_start + next_capacity;
-			}
-
-			new_end = new_start + this->size() + count;
-
-			for (int i = 0; i < (&(*pos) - _first); i++)
-				_alloc.construct(new_start + i, *(_first + i));
-			for (size_type k = 0; k < count; k++)
-				_alloc.construct(new_start + pos_len + k, value);
-			for (size_type j = 0; j < (this->size() - pos_len); j++)
-				_alloc.construct(new_end - j - 1, *(_last - j - 1));
-
-			for (size_type u = 0; u < this->size(); u++)
-				_alloc.destroy(_first + u);
-			_alloc.deallocate(_first, this->capacity());
-
-			_first = new_start;
-			_last = new_end;
-			_count = new_end_capacity;
-		}
+		for (size_type i = 0; i < count; i++)
+			pos = this->insert(pos, value);
 	}
 
 	template<class T, class Allocator>
